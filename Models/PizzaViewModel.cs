@@ -3,6 +3,6 @@
     public class PizzaViewModel
     {
         public Pizza? Pizza { get; set; }
-        public List <Ingredient> Ingredients { get; set; }
+        public List <Ingredient> IngredientsDisponible { get; set; }
     }
 }

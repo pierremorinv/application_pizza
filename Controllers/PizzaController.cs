@@ -23,7 +23,7 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Pizzas.ToListAsync());
-          
+
         }
 
         // GET: Pizzas/Details/5
@@ -72,7 +72,7 @@ namespace WebApplication2.Controllers
                 //    Vegetarien = true
                 //});
                 _context.Add(pizza);
-                
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -86,16 +86,19 @@ namespace WebApplication2.Controllers
             {
                 return NotFound();
             }
-            PizzaViewModel pizzaViewModel = new PizzaViewModel();   
-            pizzaViewModel.Ingredients = await _context.Ingredients.ToListAsync();
+            PizzaViewModel pizzaViewModel = new PizzaViewModel();
+
+            List<Ingredient> ingredientsInPizza = new List<Ingredient>();
+
             pizzaViewModel.Pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == id);
 
+            ingredientsInPizza = pizzaViewModel.Pizza.Ingredients.ToList();
 
-           
-            if (pizzaViewModel.Pizza == null)
-            {
-                return NotFound();
-            }
+            pizzaViewModel.IngredientsDisponible = await _context.Ingredients.ToListAsync();
+
+
+
+
             return View(pizzaViewModel);
         }
 
@@ -134,6 +137,16 @@ namespace WebApplication2.Controllers
             return View(pizza);
         }
 
+        public async Task<IActionResult> AddIngredientInPizza(int PizzaId, int IngredientId)
+        {
+            Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
+            Ingredient ingredient = await _context.Ingredients.FindAsync(IngredientId);
+            pizza.Ingredients.Add(ingredient);
+            _context.Update(pizza);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Edit", new { Id = PizzaId });
+
+        }
         // GET: Pizzas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -152,6 +165,15 @@ namespace WebApplication2.Controllers
             return View(pizza);
         }
 
+        public async Task<IActionResult> DeleteIngredientInPizza(int PizzaId, int IngredientId)
+        {
+            Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
+            Ingredient ingredient = await _context.Ingredients.FindAsync(IngredientId);
+            pizza.Ingredients.Remove(ingredient);
+            _context.Update(pizza);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Edit", new { Id = PizzaId });
+        }
         // POST: Pizzas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

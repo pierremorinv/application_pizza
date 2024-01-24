@@ -122,9 +122,9 @@
     text-align: center;
     height: 50px;
 }
+form {
+    margin-top: 3%;
 
-thead {
-    text-align: center;
 }
 
 tr, td, th {
@@ -135,4 +135,9 @@ tr, td, th {
 
 .button-table {
     margin-top: 10%;
+}
+h1{
+    margin:1%;
+   
+
 }
