@@ -8,8 +8,8 @@
 
 <h4>Pizza</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="edit-content">
+    <div>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Pizza.PizzaId" />
@@ -23,6 +23,16 @@
                 <input asp-for="Pizza.Prix" class="form-control" />
                 <span asp-validation-for="Pizza.Prix" class="text-danger"></span>
             </div>
+            <div>
+                <h3>Ingrédients</h3>
+                <p>
+                    @foreach (var ingredient in Model.Pizza.Ingredients)
+            {
+                        <span>@ingredient.Nom</span>
+
+            }
+                    </p>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Pizza.Vegetarienne" /> @Html.DisplayNameFor(model => model.Pizza.Vegetarienne)
@@ -32,12 +42,36 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <div>
+        <h2 class="edit-table-title">Liste d'ingrédients</h2>
+        <table class="tableau">
+            <tr>
+                <th> Nom </th>
+                <th>Prix</th>
+                <th>Végétarien</th>
+                <th>Ajouter</th>
+
+            </tr>
+        @foreach (var ingredient in Model.Ingredients)
+        {
+            
+                <tr>
+                    <td>@ingredient.Nom</td>
+                    <td>@ingredient.Prix €</td>
+                    <td>@ingredient.Vegetarien</td>
+                    <td> <a asp-action="Edit"><input type="button" value="comfirmer" /></a>  </td>
+                </tr>
+            
+        }
+        </table>
+
+       
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

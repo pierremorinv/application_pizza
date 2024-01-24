@@ -23,6 +23,7 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Pizzas.ToListAsync());
+          
         }
 
         // GET: Pizzas/Details/5
@@ -85,13 +86,17 @@ namespace WebApplication2.Controllers
             {
                 return NotFound();
             }
+            PizzaViewModel pizzaViewModel = new PizzaViewModel();   
+            pizzaViewModel.Ingredients = await _context.Ingredients.ToListAsync();
+            pizzaViewModel.Pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == id);
 
-            var pizza = await _context.Pizzas.FindAsync(id);
-            if (pizza == null)
+
+           
+            if (pizzaViewModel.Pizza == null)
             {
                 return NotFound();
             }
-            return View(pizza);
+            return View(pizzaViewModel);
         }
 
         // POST: Pizzas/Edit/5

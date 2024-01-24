@@ -112,11 +112,12 @@
 
 
 .edit-content {
+    margin-top:3%;
     display: flex;
     justify-content: space-around;
 }
 
-.formulaire {
+.tableau {
     margin-top: 3%;
     text-align: center;
     height: 50px;
@@ -126,17 +127,12 @@ thead {
     text-align: center;
 }
 
-tr {
-    border: 2px solid #DD7835;
-    height: 50px;
-}
-
-td {
+tr, td, th {
     border: 2px solid #DD7835;
     height: 50px;
     padding: 10px
 }
 
-.button-form {
+.button-table {
     margin-top: 10%;
 }
