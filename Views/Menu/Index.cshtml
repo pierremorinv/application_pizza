@@ -1,0 +1,24 @@
+﻿@model IEnumerable<WebApplication2.Models.Pizza>;
+
+@{
+    Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
+}
+@if(Model == null)
+{
+    <p>Aucune pizza disponible</p>
+}
+@foreach (var pizza in Model)
+{
+
+    <div class="menu-pizza">
+        <span class="menu-pizza-nom">@pizza.Nom</span> <span class="menu-pizza-price">@pizza.Prix €</span>
+        <div class="item-pizza-ingredient">@pizza.Ingredients</div>
+        @if (pizza.Vegetarienne)
+        {
+            <span class="menu-pizza-vege">VÉGÉTARIENNE</span>
+        }
+
+    </div>
+
+
+}

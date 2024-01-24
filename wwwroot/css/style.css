@@ -1,0 +1,142 @@
+﻿/*--------------------------Menu Pizza page-------------------------*/
+.menu-pizza-body {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/menu_background.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    font-family: Arial;
+    margin: 0px;
+    color: white;
+}
+
+.menu-pizza {
+    padding: 1%;
+    margin-left: 1%;
+}
+
+.menu-pizza-h1 {
+    background-color: #DD7835;
+    padding: 0.5%;
+    width: fit-content
+}
+
+.menu-pizza-nom {
+    font-size: 22px;
+}
+
+.menu-pizza-price {
+    color: #DD7835;
+    font-size: 18px;
+}
+
+.menu-pizza-vege {
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 8px;
+    color: black;
+    background-color: #DD7835;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+.menu-pizza-small-logo {
+    margin: 1%
+}
+
+/*--------------------------Home Pizza page -------------------------*/
+
+.home-body {
+    background: url("/images/main_background.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.redirect-menu-pizza {
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.redirect-menu-link {
+    margin-top: 5%;
+    padding: 3%;
+}
+
+.redirect-menu-link, .nav-bar-acceuil {
+    border: 1px solid white;
+    border-radius: 25px;
+    transition: 0.7s;
+}
+
+    .redirect-menu-link:hover, .nav-bar-acceuil:hover {
+        opacity: 0.9;
+        background-color: white;
+    }
+
+.link, .nav-bar-acceuil-a {
+    display: block;
+    color: white;
+    font-size: 22px;
+    text-decoration: none;
+    transition: 0.7s;
+}
+
+    .link:hover, .nav-bar-acceuil-a:hover {
+        color: black;
+    }
+
+.header-client {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-bar-acceuil {
+    padding: 1%;
+}
+
+.admin-header {
+    background-color: maroon;
+    display: flex;
+    justify-content: center;
+    padding: 1%
+}
+
+
+/*----------------EDIT-PIZZA-------------------------------*/
+
+
+.edit-content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.formulaire {
+    margin-top: 3%;
+    text-align: center;
+    height: 50px;
+}
+
+thead {
+    text-align: center;
+}
+
+tr {
+    border: 2px solid #DD7835;
+    height: 50px;
+}
+
+td {
+    border: 2px solid #DD7835;
+    height: 50px;
+    padding: 10px
+}
+
+.button-form {
+    margin-top: 10%;
+}
