@@ -96,9 +96,6 @@ namespace WebApplication2.Controllers
 
             pizzaViewModel.IngredientsDisponible = await _context.Ingredients.ToListAsync();
 
-
-
-
             return View(pizzaViewModel);
         }
 
