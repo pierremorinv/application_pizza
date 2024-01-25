@@ -24,21 +24,30 @@
             </div>
             <div>
                 <h3>Ingrédients</h3>
-                <ul> 
+                <ul>
 
                     @foreach (var ingredient in Model.Pizza.Ingredients)
-            {
-               <li>@ingredient.Nom</li>
-                      
+                    {
+                        <li>@ingredient.Nom</li>
 
-            }
+
+                    }
                 </ul>
-                
+
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Pizza.Vegetarienne" /> @Html.DisplayNameFor(model => model.Pizza.Vegetarienne)
-                </label>
+            <div>
+                @{
+                    if (Model.Pizza.Vegetarienne)
+                    {
+                        <p> Votre pizza est végétarienne 🌱</p>
+                    }
+                    else
+                    {
+                        <p>Votre Pizza n'est pas végétarienne 🍖</p>
+                    }
+                   
+                }
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -47,8 +56,6 @@
         <a asp-action="Index">Back to List</a>
     </div>
     <div>
-
-       
     </div>
     <div class="edit-table-ingredient">
         <h2 class="edit-table-title">Liste d'ingrédients</h2>
@@ -57,11 +64,11 @@
                 <th> Nom </th>
                 <th>Prix</th>
                 <th>Végétarien</th>
-                <th>Ajouter</th>
+                <th>Quantité</th>
 
             </tr>
 
-          
+
             @foreach (var ingredient in Model.IngredientsDisponible)
 
             {
@@ -73,6 +80,7 @@
                         <td>@ingredient.Vegetarien</td>
 
                         <td>
+                            <input type="number" id="tentacles" name="tentacles" min="1" max="5" />
                             <a href="@Url.Action("DeleteIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button> -</button></a>
                         </td>
                     </tr>
@@ -85,25 +93,22 @@
                         <td>@ingredient.Vegetarien</td>
 
                         <td>
+                            <input type="number" id="tentacles" name="tentacles" min="1" max="5" />
                             <a href="@Url.Action("AddIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button>+ </button></a>
-                           
+
                         </td>
                     </tr>
                 }
-                    
-               
-              
+
+
+
 
             }
         </table>
 
         @{
-            float prixTotal = 5;
-            foreach(var ingredient in Model.Pizza.Ingredients)
-            {
-                prixTotal = prixTotal + ingredient.Prix;
-            }
-            <h6>Le prix total de votre pizza est de @prixTotal € </h6>
+
+            <h6>Le prix total de votre pizza est de @Model.Pizza.Prix € </h6>
         }
     </div>
 </div>
@@ -111,5 +116,7 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

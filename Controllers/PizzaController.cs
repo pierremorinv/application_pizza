@@ -23,7 +23,7 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> Index()
         {
 
-            return View(await _context.Pizzas.ToListAsync());
+            return View(await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync());
 
         }
 
@@ -49,8 +49,16 @@ namespace WebApplication2.Controllers
         public IActionResult Create()
         {
             Pizza pizzaTest = new Pizza();
-            pizzaTest.Ingredients = new List<Ingredient>();
-            pizzaTest.Prix = 50;
+            pizzaTest.Ingredients = new List<Ingredient>()
+            {
+                 new Ingredient()
+              {
+                  Nom ="Pâte au levain 72h ",
+                  Prix = 7f,
+                  Vegetarien = true
+              }
+            };
+            pizzaTest.Prix += pizzaTest.Ingredients[0].Prix ;
             return View(pizzaTest);
         }
 
@@ -99,16 +107,12 @@ namespace WebApplication2.Controllers
 
             pizzaViewModel.IngredientsDisponible = await _context.Ingredients.ToListAsync();
 
-          foreach(var ingredient in ingredientsInPizza)
-            {
-                pizzaViewModel.Pizza.Prix += ingredient.Prix;
-            }
 
 
 
             return View(pizzaViewModel);
         }
-     
+
         // POST: Pizzas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -149,7 +153,17 @@ namespace WebApplication2.Controllers
             Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
 
             Ingredient ingredient = await _context.Ingredients.FindAsync(IngredientId);
+            
             pizza.Ingredients.Add(ingredient);
+            if (!ingredient.Vegetarien)
+            {
+                pizza.Vegetarienne = false;
+            }
+
+
+            pizza.Prix += ingredient.Prix;
+
+
             _context.Update(pizza);
             await _context.SaveChangesAsync();
             return RedirectToAction("Edit", new { Id = PizzaId });
@@ -177,6 +191,23 @@ namespace WebApplication2.Controllers
         {
             Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
             Ingredient ingredient = await _context.Ingredients.FindAsync(IngredientId);
+
+            pizza.Prix -= ingredient.Prix;
+
+
+            foreach(var i in  pizza.Ingredients){
+
+                if (!i.Vegetarien)
+                {
+                    pizza.Vegetarienne = false;
+                }
+                pizza.Vegetarienne = true;
+            }
+
+            //if(!ingredient.Vegetarien) 
+            //{
+            //    pizza.Vegetarienne = true;
+            //}
             pizza.Ingredients.Remove(ingredient);
             _context.Update(pizza);
             await _context.SaveChangesAsync();
