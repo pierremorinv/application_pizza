@@ -24,13 +24,16 @@
             </div>
             <div>
                 <h3>Ingrédients</h3>
-                <p>
+                <ul> 
+
                     @foreach (var ingredient in Model.Pizza.Ingredients)
             {
-                        <span>@ingredient.Nom</span>
+               <li>@ingredient.Nom</li>
+                      
 
             }
-                    </p>
+                </ul>
+                
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -44,31 +47,10 @@
         <a asp-action="Index">Back to List</a>
     </div>
     <div>
-        <h2 class="edit-table-title">Liste d'ingrédients présent </h2>
-        <table class="tableau">
-            <tr>
-                <th> Nom </th>
-                <th>Prix</th>
-                <th>Végétarien</th>
-                <th>Ajouter</th>
-
-            </tr>
-        @foreach (var ingredient in Model.Pizza.Ingredients)
-        {
-            
-                <tr>
-                    <td>@ingredient.Nom</td>
-                    <td>@ingredient.Prix €</td>
-                    <td>@ingredient.Vegetarien</td>
-                    <td> <a href="@Url.Action("DeleteIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button>Supprimer </button></a>  </td>
-                </tr>
-            
-        }
-        </table>
 
        
     </div>
-    <div>
+    <div class="edit-table-ingredient">
         <h2 class="edit-table-title">Liste d'ingrédients</h2>
         <table class="tableau">
             <tr>
@@ -78,21 +60,51 @@
                 <th>Ajouter</th>
 
             </tr>
-            @foreach (var ingredient in Model.IngredientsDisponible)
-            {
 
-                <tr>
-                    <td>@ingredient.Nom</td>
-                    <td>@ingredient.Prix €</td>
-                    <td>@ingredient.Vegetarien</td>
-                    @* <td> <a asp-action="AddIngredientInPizza"><input type="button" value="comfirmer" /></a>  </td> *@
-                    <td> <a href="@Url.Action("AddIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button>comfirmer </button></a>  </td>
-                </tr>
+          
+            @foreach (var ingredient in Model.IngredientsDisponible)
+
+            {
+                if (Model.Pizza.Ingredients.Any(i => i.IngredientId == ingredient.IngredientId))
+                {
+                    <tr class="tr-condition-ingredient">
+                        <td>@ingredient.Nom</td>
+                        <td>@ingredient.Prix €</td>
+                        <td>@ingredient.Vegetarien</td>
+
+                        <td>
+                            <a href="@Url.Action("DeleteIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button> -</button></a>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="tr-condition-ingredient-null">
+                        <td>@ingredient.Nom</td>
+                        <td>@ingredient.Prix €</td>
+                        <td>@ingredient.Vegetarien</td>
+
+                        <td>
+                            <a href="@Url.Action("AddIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button>+ </button></a>
+                           
+                        </td>
+                    </tr>
+                }
+                    
+               
+              
 
             }
         </table>
 
-
+        @{
+            float prixTotal = 5;
+            foreach(var ingredient in Model.Pizza.Ingredients)
+            {
+                prixTotal = prixTotal + ingredient.Prix;
+            }
+            <h6>Le prix total de votre pizza est de @prixTotal € </h6>
+        }
     </div>
 </div>
 

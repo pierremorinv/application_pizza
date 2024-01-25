@@ -3,10 +3,10 @@ using WebApplication2.Data;
 
 namespace WebApplication2.Controllers
 {
-    public class MenuPizzaController : Controller
+    public class MenuController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public MenuPizzaController(ApplicationDbContext context)
+        public MenuController(ApplicationDbContext context)
         {
             _context = context;
         }

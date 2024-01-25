@@ -110,7 +110,9 @@
 
 /*----------------EDIT-PIZZA-------------------------------*/
 
-
+body{
+    background-color: darkgray
+}
 .edit-content {
     margin-top:3%;
     display: flex;
@@ -128,16 +130,36 @@ form {
 }
 
 tr, td, th {
-    border: 2px solid #DD7835;
+    border: 2px solid black;
     height: 50px;
     padding: 10px
 }
 
-.button-table {
-    margin-top: 10%;
-}
-h1{
-    margin:1%;
-   
 
+li{
+    list-style-type:none;
+}
+
+.tr-condition-ingredient{
+  
+    background-color: black;
+    
+}
+.edit-table-ingredient {
+    background-color: maroon;
+    text-align: center;
+    padding: 2%;
+    color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+h6{
+    margin-top:3%
+}
+.tr-condition-ingredient-null{
+    transition:0.4s;
+}
+.tr-condition-ingredient-null:hover {
+    background-color: black;
+    opacity: 0.8;
 }

@@ -22,6 +22,7 @@ namespace WebApplication2.Controllers
         // GET: Pizzas
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Pizzas.ToListAsync());
 
         }
@@ -90,15 +91,24 @@ namespace WebApplication2.Controllers
 
             List<Ingredient> ingredientsInPizza = new List<Ingredient>();
 
+
+
             pizzaViewModel.Pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == id);
 
             ingredientsInPizza = pizzaViewModel.Pizza.Ingredients.ToList();
 
             pizzaViewModel.IngredientsDisponible = await _context.Ingredients.ToListAsync();
 
+          foreach(var ingredient in ingredientsInPizza)
+            {
+                pizzaViewModel.Pizza.Prix += ingredient.Prix;
+            }
+
+
+
             return View(pizzaViewModel);
         }
-
+     
         // POST: Pizzas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -137,6 +147,7 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> AddIngredientInPizza(int PizzaId, int IngredientId)
         {
             Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
+
             Ingredient ingredient = await _context.Ingredients.FindAsync(IngredientId);
             pizza.Ingredients.Add(ingredient);
             _context.Update(pizza);
