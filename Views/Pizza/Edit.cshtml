@@ -4,8 +4,6 @@
     ViewData["Title"] = "Edit";
 }
 
-
-
 <hr />
 <div class="edit-content">
     <div class=" form-content">
@@ -31,13 +29,14 @@
                     <p>
 
                         @{
+
                             for (int i = 0; i < Model.Pizza.Ingredients.Count - 1; i++)
                             {
 
                                 <span> @Model.Pizza.Ingredients[i].Nom,  </span>
                             }
 
-                            @(Model.Pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @Model.Pizza.Ingredients.Last().Nom)
+                            @(Model.Pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : $"{@Model.Pizza.Ingredients.Last().Nom}")
 
                         }
                     </p>
@@ -55,7 +54,6 @@
             }
 
             <div class="form-group">
-                
             </div>
         </form>
         <a asp-action="Index"><input type="submit" value="Valider" class="btn btn-primary" /></a>
@@ -70,7 +68,6 @@
                 <th>Prix</th>
                 <th>Végétarien</th>
                 <th>Quantité</th>
-
             </tr>
 
 
@@ -80,13 +77,13 @@
                 if (Model.Pizza.Ingredients.Any(i => i.IngredientId == ingredient.IngredientId))
                 {
                     <tr class="tr-condition-ingredient">
-                        <td>@ingredient.Nom</td>
+                        <td> @ingredient.Nom</td>
                         <td>@ingredient.Prix €</td>
                         <td>@ingredient.Vegetarien</td>
 
                         <td>
-                            <input type="number" id="tentacles" name="tentacles" min="1" max="5" />
-                            <a href="@Url.Action("DeleteIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button> -</button></a>
+                            <a href="@Url.Action("DeleteIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId  })"> <button> -</button></a>
+
                         </td>
                     </tr>
                 }
@@ -98,15 +95,12 @@
                         <td>@ingredient.Vegetarien</td>
 
                         <td>
-                            <input type="number" id="tentacles" name="tentacles" min="1" max="5" />
+
                             <a href="@Url.Action("AddIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button>+ </button></a>
 
                         </td>
                     </tr>
                 }
-
-
-
 
             }
         </table>

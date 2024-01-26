@@ -12,6 +12,7 @@ namespace WebApplication2.Controllers
 {
     public class PizzaController : Controller
     {
+        int quantiteIngredient = 0;
         private readonly ApplicationDbContext _context;
 
         public PizzaController(ApplicationDbContext context)
@@ -152,23 +153,33 @@ namespace WebApplication2.Controllers
 
         public async Task<IActionResult> AddIngredientInPizza(int PizzaId, int IngredientId)
         {
+            
             Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
-
             Ingredient? ingredient = await _context.Ingredients.FindAsync(IngredientId);
 
+            
             pizza.Ingredients.Add(ingredient);
+
+
             if (!ingredient.Vegetarien)
             {
                 pizza.Vegetarienne = false;
             }
 
             pizza.Prix += ingredient.Prix;
-
             _context.Update(pizza);
+            quantiteIngredient++;
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Edit", new { Id = PizzaId });
 
         }
+
+
+
+
+
+
         // GET: Pizzas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

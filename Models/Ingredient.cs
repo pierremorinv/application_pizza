@@ -6,6 +6,8 @@ namespace WebApplication2.Models
     {
 
         public int IngredientId { get; set; }
+
+
         public required string Nom { get; set; }
         public bool Vegetarien { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
