@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Page d'administration</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<p class="link-redirect-create">
+    <a  asp-action="Create">Créer une pizza</a>
 </p><div class="tableau-container">
 <table class="tableau-admin">
     <thead>
@@ -51,6 +51,7 @@
                         {
                             <span>@ingredient.Nom </span>
                         }
+
                     }
 
 

@@ -1,9 +1,6 @@
 ﻿/*--------------------------Menu Pizza page-------------------------*/
 .menu-pizza-body {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/menu_background.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
     background-size: cover;
     background-position: center center;
     font-family: Arial;
@@ -18,21 +15,22 @@
 
 .menu-pizza-h1 {
     background-color: #DD7835;
+    font-size: 3rem;
     padding: 0.5%;
     width: fit-content
 }
 
 .menu-pizza-nom {
-    font-size: 22px;
+    font-size: 2rem;
 }
 
 .menu-pizza-price {
     color: #DD7835;
-    font-size: 18px;
+    font-size: 2rem;
 }
 
 .menu-pizza-vege {
-    font-size: 9px;
+    font-size: 1.5rem;
     padding: 3px 8px;
     border-radius: 8px;
     color: black;
@@ -49,9 +47,6 @@
 
 .home-body {
     background: url("/images/main_background.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
     background-size: cover;
 }
 
@@ -152,6 +147,7 @@ li{
     color: white;
     border: 1px solid black;
     border-radius: 10px;
+    margin-bottom: 3%
 }
 h6{
     margin-top:3%
@@ -170,4 +166,40 @@ h6{
 }
 .tableau-admin{
   width:80%;
+  background-color: maroon;
+  color: white;
+}
+
+.form-content{
+    border:1px solid black;
+    padding:5%;
+    background-color:maroon;
+    color:white;
+}
+.formulaire{
+    
+  
+}
+.condition-vege{
+    font-size: 22px;
+}
+.item-pizza-ingredient{
+    font-size:28px;
+}
+h1{
+    margin:2%
+}
+.link-redirect-create{
+    margin-left:3%;
+    margin-bottom:2%;
+    font-size: 1.5rem;
+}
+a{
+    color:white
+}
+
+.create-pizza-container{
+    margin-top:5%;
+    display:flex;
+    justify-content:space-around
 }

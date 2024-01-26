@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 
 namespace WebApplication2.Controllers
@@ -10,10 +11,10 @@ namespace WebApplication2.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
 
-            return View();
+            return View(await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync());
         }
     }
 }

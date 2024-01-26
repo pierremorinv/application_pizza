@@ -46,8 +46,10 @@ namespace WebApplication2.Controllers
         }
 
         // GET: Pizzas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            PizzaViewModel pizzaViewModel = new PizzaViewModel();
+            pizzaViewModel.IngredientsDisponible = await _context.Ingredients.ToListAsync();
             Pizza pizzaTest = new Pizza();
             pizzaTest.Ingredients = new List<Ingredient>()
             {
@@ -58,8 +60,8 @@ namespace WebApplication2.Controllers
                   Vegetarien = true
               }
             };
-            pizzaTest.Prix += pizzaTest.Ingredients[0].Prix ;
-            return View(pizzaTest);
+            pizzaTest.Prix += pizzaTest.Ingredients[0].Prix;
+            return View(pizzaViewModel);
         }
 
         // POST: Pizzas/Create
@@ -152,17 +154,15 @@ namespace WebApplication2.Controllers
         {
             Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
 
-            Ingredient ingredient = await _context.Ingredients.FindAsync(IngredientId);
-            
+            Ingredient? ingredient = await _context.Ingredients.FindAsync(IngredientId);
+
             pizza.Ingredients.Add(ingredient);
             if (!ingredient.Vegetarien)
             {
                 pizza.Vegetarienne = false;
             }
 
-
             pizza.Prix += ingredient.Prix;
-
 
             _context.Update(pizza);
             await _context.SaveChangesAsync();
@@ -195,7 +195,8 @@ namespace WebApplication2.Controllers
             pizza.Prix -= ingredient.Prix;
 
 
-            foreach(var i in  pizza.Ingredients){
+            foreach (var i in pizza.Ingredients)
+            {
 
                 if (!i.Vegetarien)
                 {

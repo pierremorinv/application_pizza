@@ -4,12 +4,13 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Modifiez votre pizza</h1>
+
 
 <hr />
 <div class="edit-content">
-    <div>
-        <form asp-action="Edit">
+    <div class=" form-content">
+        <form asp-action="Edit" class="formulaire">
+            <h1>Modifiez votre pizza</h1>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Pizza.PizzaId" />
             <div class="form-group">
@@ -23,37 +24,41 @@
                 <span asp-validation-for="Pizza.Prix" class="text-danger"></span>
             </div>
             <div>
-                <h3>Ingrédients</h3>
-                <ul>
-
-                    @foreach (var ingredient in Model.Pizza.Ingredients)
-                    {
-                        <li>@ingredient.Nom</li>
+                <h3> Vos Ingrédients :</h3>
+                <div class="edit-ingredient-in-pizza-div">
 
 
-                    }
-                </ul>
+                    <p>
 
-            </div>
-            <div>
-                @{
-                    if (Model.Pizza.Vegetarienne)
-                    {
-                        <p> Votre pizza est végétarienne 🌱</p>
-                    }
-                    else
-                    {
-                        <p>Votre Pizza n'est pas végétarienne 🍖</p>
-                    }
-                   
-                }
+                        @{
+                            for (int i = 0; i < Model.Pizza.Ingredients.Count - 1; i++)
+                            {
+
+                                <span> @Model.Pizza.Ingredients[i].Nom,  </span>
+                            }
+
+                            @(Model.Pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @Model.Pizza.Ingredients.Last().Nom)
+
+                        }
+                    </p>
+                </div>
 
             </div>
+
+            @if (Model.Pizza.Ingredients.Count <= 0)
+            {
+            }
+            else
+            {
+                <p class="condition-vege">  @(Model.Pizza.Vegetarienne ? " Votre pizza est végétarienne 🌱" : " Votre Pizza n'est pas végétarienne 🍖") </p>
+
+            }
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                
             </div>
         </form>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index"><input type="submit" value="Valider" class="btn btn-primary" /></a>
     </div>
     <div>
     </div>
