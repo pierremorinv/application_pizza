@@ -18,5 +18,7 @@ namespace WebApplication2.Models
         public bool Vegetarienne { get; set; }
 
         public IList <Ingredient>?  Ingredients { get; set; }
+
+        public LigneDeCommande? LigneCommande { get; set; }
     }
 }

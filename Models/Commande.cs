@@ -4,8 +4,8 @@
     {
         public int CommandeId { get; set; }
 
-        public Client client{ get; set; }
+        public DateTime DateTime { get; set; }
 
-        public DateTime DateTime = new DateTime();
+        public Client  client {  get; set; }
     }
 }

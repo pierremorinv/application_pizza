@@ -204,10 +204,6 @@ namespace WebApplication2.Controllers
                 pizza.Vegetarienne = true;
             }
 
-            //if(!ingredient.Vegetarien) 
-            //{
-            //    pizza.Vegetarienne = true;
-            //}
             pizza.Ingredients.Remove(ingredient);
             _context.Update(pizza);
             await _context.SaveChangesAsync();
@@ -221,8 +217,11 @@ namespace WebApplication2.Controllers
             var pizza = await _context.Pizzas.FindAsync(id);
             if (pizza != null)
             {
+               
                 _context.Pizzas.Remove(pizza);
+
             }
+       
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
