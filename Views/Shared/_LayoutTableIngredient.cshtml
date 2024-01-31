@@ -7,7 +7,7 @@
             <th> Nom </th>
             <th>Prix</th>
             <th>Végétarien</th>
-            <th>Quantité</th>
+            <th>Ajouter</th>
 
         </tr>
 
@@ -15,42 +15,19 @@
         @foreach (var ingredient in Model.IngredientsDisponible)
 
         {
-          @*   if (Model.Pizza.Ingredients.Any(i => i.IngredientId == ingredient.IngredientId))
-            { *@
-             @*    <tr class="tr-condition-ingredient">
-                    <td>@ingredient.Nom</td>
-                    <td>@ingredient.Prix €</td>
-                    <td>@ingredient.Vegetarien</td>
+            <tr class="tr-condition-null">
+                <td>@ingredient.Nom</td>
+                <td>@ingredient.Prix €</td>
+                <td>@ingredient.Vegetarien</td>
 
-                    <td>
-                        <input type="number" id="tentacles" name="tentacles" min="1" max="5" />
-                        <a href="@Url.Action("DeleteIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId })"> <button> -</button></a>
-                    </td>
-                </tr> *@
-            
-           @*  else
-            { *@
-                <tr class="tr-condition-ingredient-null">
-                    <td>@ingredient.Nom</td>
-                    <td>@ingredient.Prix €</td>
-                    <td>@ingredient.Vegetarien</td>
-
-                    <td>
-                        <input type="number" id="tentacles" name="tentacles" min="1" max="5" />
-                        <a href=""> <button>+ </button></a>
-                   @*  @Url.Action("AddIngredientInPizza", "Pizza", new { PizzaId = Model.Pizza.PizzaId, IngredientId = ingredient.IngredientId }) *@
-                    </td>
-                </tr>
-            @* } *@
-
-
-
+                <td>
+                    <a href="@Url.Action("AddIngredientInANewPizza", "Pizza", new { PizzaId = 1000, IngredientId = ingredient.IngredientId })"> <button> + </button></a>
+                    <a> <button> - </button></a>
+                </td>
+            </tr>
 
         }
+        
     </table>
-
-    @{
-
-        // <h6>Le prix total de votre pizza est de @Model.Pizza.Prix € </h6>
-    }
 </div>
+

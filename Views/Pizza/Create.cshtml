@@ -18,10 +18,8 @@
                 <input asp-for="Pizza.Nom" class="form-control" />
                 <span asp-validation-for="Pizza.Nom" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Pizza.Prix" class="control-label"></label>
-                <input asp-for="Pizza.Prix" class="form-control" />
-                <span asp-validation-for="Pizza.Prix" class="text-danger"></span>
+            <div class="form-group">     
+          
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -29,11 +27,11 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Ajoutez vos ingredients" class="btn btn-primary"  />
             </div>
         </form>
         <div>
-            <a asp-action="Index">Back to List</a>
+            <a asp-action="Edit">Back to List</a>
         </div>
     </div>
 
