@@ -1,11 +1,15 @@
-﻿namespace WebApplication2.Models
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApplication2.Models
 {
     public class LigneDeCommande
     {
-        public int LigneCommandeId { get; set; }
+        [Key]
+        public int LigneDeCommandeId { get; set; }
 
         public int PizzaId { get; set; }
-        public Pizza Pizza { get; set; }
+        public Pizza Pizza { get; set; } = null;
 
         public int PrixUnitaire { get; set; }
 

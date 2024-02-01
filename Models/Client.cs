@@ -7,7 +7,7 @@
 
         public string ClientLastName { get; set; }
 
-        public IList<Commande>? Commandes { get; set;}
+        public IList<Commande>? Commandes { get; set; }
 
     }
 }

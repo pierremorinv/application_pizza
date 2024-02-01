@@ -4,8 +4,10 @@
     {
         public int CommandeId { get; set; }
 
-        public DateTime DateTime { get; set; }
+        public DateTime DateCommande { get; set; }
 
-        public Client  client {  get; set; }
+        public Client  Client {  get; set; }
+
+        public int ClientID { get; set; }
     }
 }

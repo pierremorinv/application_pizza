@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 using WebApplication2.Models;
+using WebApplication2.ViewModel;
 
 namespace WebApplication2.Controllers
 {
@@ -152,7 +153,7 @@ namespace WebApplication2.Controllers
 
             
             pizza.Ingredients.Add(ingredient);
-
+            pizza.Prix += ingredient.Prix;
 
             if (!ingredient.Vegetarien)
             {
@@ -214,10 +215,11 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pizza = await _context.Pizzas.FindAsync(id);
+            var pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == id);
+    
             if (pizza != null)
             {
-               
+                pizza.Ingredients.Clear();
                 _context.Pizzas.Remove(pizza);
 
             }

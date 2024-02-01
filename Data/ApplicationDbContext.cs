@@ -32,10 +32,27 @@ namespace WebApplication2.Data
                         j.HasKey("PizzaId", "IngredientId");
                         j.ToTable("PizzaIngredient");
                     });
+              
             });
+            modelBuilder.Entity<Client>()
+                .HasMany(e => e.Commandes)
+                .WithOne(e => e.Client)
+                .HasForeignKey(e => e.ClientID)
+                .IsRequired();
+       
+            modelBuilder.Entity<LigneDeCommande>()
+                .HasOne(e => e.Pizza)
+                .WithOne(e => e.LigneDeCommande)?
+                .HasForeignKey<LigneDeCommande>(e => e.PizzaId)
+                .IsRequired();
+                
         }
 
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Commande> Commandes { get; set;}
+        public DbSet<LigneDeCommande> LigneDeCommandes { get; set; }
     }
 }

@@ -19,6 +19,6 @@ namespace WebApplication2.Models
 
         public IList <Ingredient>?  Ingredients { get; set; }
 
-        public LigneDeCommande? LigneCommande { get; set; }
+        public LigneDeCommande? LigneDeCommande { get; set; }
     }
 }
