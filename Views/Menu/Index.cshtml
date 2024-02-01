@@ -1,4 +1,4 @@
-﻿@model WebApplication2.ViewModel.PizzaLigneDeCommandeViewModel;
+﻿@model WebApplication2.ViewModel.PizzaCommandeViewModel;
 
 @{
     Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
@@ -39,20 +39,31 @@
     <div class="commande-client-tableau">
         <h1 class="commande-client-tableau-h1">Votre commande</h1>
         <div class="commande-client-tableau-content">
-            <div class="commande-client-tableau-item">
-                <p>Pizza 1  Prix 13 € </p> <button>❌</button>
-            </div>
-            <div class="commande-client-tableau-item">
-                <p>Pizza 1  Prix 13 € </p> <button>❌</button>
-            </div>
-            <div class="commande-client-tableau-item">
-                <p>Pizza 1  Prix 13 € </p> <button>❌</button>
-            </div>
-            <div class="commande-client-tableau-item">
-                <p>Pizza 1  Prix 13 € </p> <button>❌</button>
-            </div>
-            <p class="">Prix Total : 32 €</p>
+
+         
+            @foreach(var commande in Model.Commandes)
+            {
+                float prixTotal = 0;
+                foreach(var ligne in Model.LigneDeCommandes)
+                {
+                     prixTotal += ligne.Pizza.Prix;
+                    <div class="commande-client-tableau-item">
+                        
+                        <p>@ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p> <button>❌</button>
+                    </div>
+                   
+                }
+                <p>Le prix total est de @prixTotal € </p>
+
+                
+                   
+                
+            }
+
+            
+            
         </div>
+       
 
         <div class="commande-client-div-button">
             <button class="commande-client-button">Aller au panier</button>

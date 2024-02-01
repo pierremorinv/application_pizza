@@ -37,17 +37,20 @@ namespace WebApplication2.Data
               
             });
 
+
             modelBuilder.Entity<Client>()
                 .HasMany(cl => cl.Commandes)
                 .WithOne(co => co.Client)
                 .HasForeignKey(cl => cl.ClientID)
                 .IsRequired();
 
+
             modelBuilder.Entity<Commande>()
                .HasMany(c => c.ligneDeCommandes)
                .WithOne(lc => lc.Commande)
                .HasForeignKey(lc => lc.CommandeId)
                .IsRequired();
+
 
             modelBuilder.Entity<LigneDeCommande>()
                 .HasOne(lc => lc.Pizza)

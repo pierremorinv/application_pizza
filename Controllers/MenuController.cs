@@ -15,13 +15,17 @@ namespace WebApplication2.Controllers
         }
         public async Task <IActionResult> Index()
         {
-            PizzaLigneDeCommandeViewModel pizzaLigneDeCommandeViewModel = new PizzaLigneDeCommandeViewModel();
+            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
 
-            pizzaLigneDeCommandeViewModel.Pizzas = await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync();
+            pizzaCommandeViewModel.Pizzas = await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync();
 
-            IList<Pizza> PizzasCommande = new List<Pizza>();
+            pizzaCommandeViewModel.Commandes = await _context.Commandes.Include(c => c.ligneDeCommandes).AsNoTracking().ToListAsync();
 
-            return View(pizzaLigneDeCommandeViewModel);
+            pizzaCommandeViewModel.LigneDeCommandes = await _context.LigneDeCommandes.Include(lc => lc.Pizza).AsNoTracking().ToListAsync();
+
+
+
+            return View(pizzaCommandeViewModel);
         }
     }
 }
