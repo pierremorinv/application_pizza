@@ -13,5 +13,8 @@ namespace WebApplication2.Models
 
         public int PrixUnitaire { get; set; }
 
+        public Commande Commande { get; set; }
+        public int CommandeId { get; set; }
+
     }
 }

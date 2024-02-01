@@ -23,29 +23,39 @@ namespace WebApplication2.Data
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_PizzaIngredient_Ingredient"),
-                    l => l.HasOne<Pizza>().WithMany()
+
+                    i => i.HasOne<Pizza>().WithMany()
                         .HasForeignKey("PizzaId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_PizzaIngredient_Pizza"),
-                    j =>
+
+                    pi =>
                     {
-                        j.HasKey("PizzaId", "IngredientId");
-                        j.ToTable("PizzaIngredient");
+                        pi.HasKey("PizzaId", "IngredientId");
+                        pi.ToTable("PizzaIngredient");
                     });
               
             });
+
             modelBuilder.Entity<Client>()
-                .HasMany(e => e.Commandes)
-                .WithOne(e => e.Client)
-                .HasForeignKey(e => e.ClientID)
+                .HasMany(cl => cl.Commandes)
+                .WithOne(co => co.Client)
+                .HasForeignKey(cl => cl.ClientID)
                 .IsRequired();
-       
+
+            modelBuilder.Entity<Commande>()
+               .HasMany(c => c.ligneDeCommandes)
+               .WithOne(lc => lc.Commande)
+               .HasForeignKey(lc => lc.CommandeId)
+               .IsRequired();
+
             modelBuilder.Entity<LigneDeCommande>()
-                .HasOne(e => e.Pizza)
-                .WithOne(e => e.LigneDeCommande)?
-                .HasForeignKey<LigneDeCommande>(e => e.PizzaId)
+                .HasOne(lc => lc.Pizza)
+                .WithOne(p => p.LigneDeCommande)?
+                .HasForeignKey<LigneDeCommande>(lc => lc.PizzaId)
                 .IsRequired();
-                
+
+          
         }
 
         public DbSet<Pizza> Pizzas { get; set; }
