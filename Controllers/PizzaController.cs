@@ -202,8 +202,10 @@ namespace WebApplication2.Controllers
                 {
                     pizza.Vegetarienne = false;
                 }
+                
                 pizza.Vegetarienne = true;
             }
+
 
             pizza.Ingredients.Remove(ingredient);
             _context.Update(pizza);

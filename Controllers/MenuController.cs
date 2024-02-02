@@ -19,13 +19,38 @@ namespace WebApplication2.Controllers
 
             pizzaCommandeViewModel.Pizzas = await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync();
 
-            pizzaCommandeViewModel.Commandes = await _context.Commandes.Include(c => c.ligneDeCommandes).AsNoTracking().ToListAsync();
-
-            pizzaCommandeViewModel.LigneDeCommandes = await _context.LigneDeCommandes.Include(lc => lc.Pizza).AsNoTracking().ToListAsync();
-
+            pizzaCommandeViewModel.Commande = new Commande() { ClientID = 16,DateCommande = DateTime.Now,ligneDeCommandes = new List<LigneDeCommande>()}; /*await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza).AsNoTracking().ToListAsync();
+*/
 
 
             return View(pizzaCommandeViewModel);
+        }
+
+        public async Task<IActionResult> AddPizzaInLigneDeCommande(int PizzaId)
+        {
+            
+            LigneDeCommande ligneDeCommande = new LigneDeCommande();
+            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
+            Pizza pizza  = await _context.Pizzas.Include(p => p.Ingredients).FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
+
+            //if (pizza.PizzaId != PizzaId)
+            //{
+            //    return(NotFound());
+            //}
+            //else
+            //{
+             
+            //}
+            ligneDeCommande.Pizza = pizza;
+            ligneDeCommande.PizzaId = PizzaId;
+           
+            _context.Update(ligneDeCommande);
+            await _context.SaveChangesAsync();
+
+
+
+            return View(PizzaId);
+
         }
     }
 }

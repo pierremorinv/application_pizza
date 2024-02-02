@@ -6,8 +6,7 @@ namespace WebApplication2.ViewModel
     {
         public IList<Pizza>? Pizzas { get; set; }
 
-        public IList <Commande>? Commandes { get; set; }
+        public Commande? Commande { get; set; }
 
-        public IList<LigneDeCommande>? LigneDeCommandes { get; set; }
     }
 }

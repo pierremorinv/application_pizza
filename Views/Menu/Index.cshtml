@@ -13,7 +13,6 @@
         }
         @foreach (var pizza in Model.Pizzas)
         {
-
             <div class="menu-pizza">
                 <span class="menu-pizza-nom">@pizza.Nom</span> <span class="menu-pizza-price">@pizza.Prix €</span>
                 <div class="item-pizza-ingredient">
@@ -23,13 +22,14 @@
                         <span>@pizza.Ingredients[i].Nom,</span>
                     }
                     @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)
-                    <button class="btn-ajouter">Ajouter</button>
+
+                    <span class="btn-ajouter"><a href="@Url.Action("AddPizzaInLigneDeCommande", "Menu", new { pizzaId = Model.Pizzas })"> Ajouter </a> </span>
+                    
                 </div>
                 @if (pizza.Vegetarienne)
                 {
                     <span class="menu-pizza-vege">VÉGÉTARIENNE</span>
                 }
-
             </div>
 
         }
@@ -41,10 +41,10 @@
         <div class="commande-client-tableau-content">
 
          
-            @foreach(var commande in Model.Commandes)
+            @foreach(var ligne in Model.Commande.ligneDeCommandes)
             {
                 float prixTotal = 0;
-                foreach(var ligne in Model.LigneDeCommandes)
+               
                 {
                      prixTotal += ligne.Pizza.Prix;
                     <div class="commande-client-tableau-item">
@@ -54,10 +54,7 @@
                    
                 }
                 <p>Le prix total est de @prixTotal € </p>
-
-                
-                   
-                
+       
             }
 
             
