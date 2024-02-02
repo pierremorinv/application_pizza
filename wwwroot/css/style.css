@@ -214,6 +214,11 @@ a{
     height: 50px;
     width: 120px;
     border: 1px solid black;
+    padding:1%;
+  
+}
+a {
+    text-decoration: none;
 }
 .btn-ajouter:hover{
    

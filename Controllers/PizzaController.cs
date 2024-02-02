@@ -190,6 +190,7 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> DeleteIngredientInPizza(int PizzaId, int IngredientId)
         {
             Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
+
             Ingredient ingredient = await _context.Ingredients.FindAsync(IngredientId);
 
             pizza.Prix -= ingredient.Prix;
@@ -202,10 +203,10 @@ namespace WebApplication2.Controllers
                 {
                     pizza.Vegetarienne = false;
                 }
-                
+
+
                 pizza.Vegetarienne = true;
             }
-
 
             pizza.Ingredients.Remove(ingredient);
             _context.Update(pizza);
