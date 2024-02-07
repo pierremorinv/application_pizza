@@ -33,12 +33,11 @@
                     }
                     @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)
 
-                    @if(Model.Commande.ligneDeCommandes.All(lc => lc.PizzaId != pizza.PizzaId))
+                    @if (Model.Commande.ligneDeCommandes.All(lc => lc.PizzaId != pizza.PizzaId))
                     {
                         <span class="btn-ajouter"><a href="@Url.Action("AddPizzaInLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> Ajouter </a> </span>
 
                     }
-                   
 
                 </div>
                 @if (pizza.Vegetarienne)
@@ -51,8 +50,13 @@
 
 
     </div>
+  
+
+ 
+
+
     <div class="commande-client-tableau">
-        <h1 class="commande-client-tableau-h1">Votre commande</h1>
+        <h2 class="commande-client-tableau-h1">Votre commande</h2>
         <div class="commande-client-tableau-content">
             <p>Numéro de la commande : @Model.Commande.CommandeId</p>
 
@@ -63,15 +67,22 @@
                 <div class="commande-client-tableau-item">
                     <div class="div-quantite-pizza">
                         <span class="btn-quantite"> <a href="@Url.Action("AddPizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">+ </a></span>
-                        @if(ligne.QuantitePizza > 1)
+                        @if (ligne.QuantitePizza > 1)
                         {
                             <span class="btn-quantite"> <a href="@Url.Action("DeletePizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">-</a></span>
                         }
                     </div>
 
-                    <p>@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p>
 
-                    <span class="btn-supprimer"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId, CommandeId = Model.Commande.CommandeId})">❌ </a></span>
+                    <div>
+                        <p>@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p>
+                        <button> <a class="a-extra"> Ajouter Extra  <a/> </button>
+
+
+                    </div>
+
+
+                    <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId, CommandeId = Model.Commande.CommandeId})">❌ </a></span>
 
                 </div>
 
@@ -86,5 +97,34 @@
         <div class="commande-client-div-button">
             <button class="commande-client-button">Commander</button>
         </div>
+    </div>
+    <div class="table-ingredient-options">
+        <h2 class="">Ajouter des extras à votre 🍕</h2>
+        <table class="tableau">
+            <tr>
+                <th> Nom </th>
+                <th>Prix</th>
+                <th>Végétarien</th>
+                <th>Ajouter</th>
+
+            </tr>
+
+
+            @foreach (var ingredient in Model.ingredients)
+
+            {
+                <tr class="tr-extra-ingredient">
+                    <td>@ingredient.Nom</td>
+                    <td>@ingredient.Prix €</td>
+                    <td>@ingredient.Vegetarien</td>
+
+                    <td>
+                        <a href=""> <button> + </button></a>
+                        <a> <button> - </button></a>
+                    </td>
+                </tr>
+            }
+
+        </table>
     </div>
 </div>

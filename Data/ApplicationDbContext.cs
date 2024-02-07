@@ -58,7 +58,18 @@ namespace WebApplication2.Data
                 .HasForeignKey<LigneDeCommande>(lc => lc.PizzaId)
                 .IsRequired();
 
-          
+
+            modelBuilder.Entity<Option>()
+                .HasOne(o => o.LigneDeCommande)
+                .WithOne(lc => lc.Option)
+                .HasForeignKey<Option>(lc => lc.LigneDecommandeId)
+                .IsRequired(false);
+                
+            modelBuilder.Entity<Option>()
+                .HasOne(o => o.Iingredient)
+                .WithOne(lc => lc.Option)
+                .HasForeignKey<Option> (lc => lc.IngredientId)
+                .IsRequired(false); 
         }
 
         public DbSet<Pizza> Pizzas { get; set; }

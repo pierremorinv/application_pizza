@@ -8,5 +8,7 @@ namespace WebApplication2.ViewModel
 
         public Commande? Commande { get; set; }
 
+        public IList<Ingredient> ingredients { get; set; }
+
     }
 }

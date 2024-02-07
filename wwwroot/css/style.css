@@ -45,7 +45,7 @@
 
 /*--------------------------Home Pizza page -------------------------*/
 .main-pizza-content{
-    width: 80%;
+    width: 40%;
 }
 .home-body {
     background: url("/images/main_background.jpg") no-repeat center center fixed;
@@ -233,13 +233,11 @@ a {
     cursor:pointer;
 }
 .commande-client-tableau{
-    border-radius:10px;
-    margin-top:5%;
-    margin-right:5%;
+    border-radius:10px; 
     border: 1px solid green;
     background-color:beige;
     opacity:0.8;
-    width:500px;
+    width:17%;
     height:fit-content;
 }
 .commande-client-tableau-h1{
@@ -248,14 +246,17 @@ a {
     text-align:center;
 }
 .menu-pizza-content{
+    margin-top:3%;
+    margin-right:3%;
     display:flex;
     justify-content:space-between;
 }
 .commande-client-tableau-item{
+    align-items:center;
     display:flex;
     justify-content:space-between;
     border-radius:5px;
-    font-size:22px;
+    font-size:19px;
     margin:2%;
     padding:2%;
     color:black;
@@ -292,10 +293,46 @@ button:hover{
 width:10%;
 }
 .btn-quantite{
+
+    border-radius:5px;
     text-align:center;
     padding:30%;
     color:green;
     background-color:black;
     margin-top:20%;
     display:block;
+}
+.btn-delete {
+    background-color: black;
+    padding: 1%;
+    border-radius: 5px;
+}
+.btn-quantite, .btn-delete{
+    transition:0.4s;
+}
+.btn-delete:hover, .btn-quantite:hover{
+    opacity:0.8;
+}
+.option-value{
+    color:black;
+}
+.table-ingredient-options{
+  
+    border-radius:10px;
+    border:1px solid black;
+    padding:1%;
+    height:max-content;
+    background-color:beige;
+    opacity:0.8;
+    color:black;
+
+}
+.tr-extra-ingredient{
+    height:10px;
+}
+td{
+    height:1px;
+}
+.a-extra{
+    color:black;
 }
