@@ -50,9 +50,9 @@
 
 
     </div>
-  
 
- 
+
+
 
 
     <div class="commande-client-tableau">
@@ -76,17 +76,33 @@
 
                     <div>
                         <p>@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p>
-                        <button> <a class="a-extra"> Ajouter Extra  <a/> </button>
+                        <button> <a class="a-extra"> Ajouter Extra  <a /> </button>
 
+                        @if (Model.Option != null)
+                        {
+                            
+                            @foreach (var option in Model.Option)
+                            {
+                                
+                                if (option.LigneDecommandeId == ligne.LigneDeCommandeId)
+                                {
+
+                                    <span class="test-option"> @option.Iingredient.Nom</span>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <p class="test-option">pas d'option</p>
+                        }
 
                     </div>
-
-
                     <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId, CommandeId = Model.Commande.CommandeId})">❌ </a></span>
 
                 </div>
 
             }
+
 
 
             <p>Le prix total est de @prixTotal € </p>

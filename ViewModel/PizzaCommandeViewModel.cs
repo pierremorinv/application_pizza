@@ -10,5 +10,7 @@ namespace WebApplication2.ViewModel
 
         public IList<Ingredient> ingredients { get; set; }
 
+        public IList <Option>? Option { get; set; }
+
     }
 }

@@ -22,6 +22,7 @@ namespace WebApplication2.Controllers
             pizzaCommandeViewModel.Commande = await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(cl => cl.Pizza).AsNoTracking().OrderBy(c => c.ClientID).LastOrDefaultAsync();
             pizzaCommandeViewModel.Pizzas = await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync();
             pizzaCommandeViewModel.ingredients = await _context.Ingredients.ToListAsync();
+            pizzaCommandeViewModel.Option = await _context.Options.ToListAsync();
 
 
             return View(pizzaCommandeViewModel);

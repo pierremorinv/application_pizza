@@ -78,5 +78,6 @@ namespace WebApplication2.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Commande> Commandes { get; set;}
         public DbSet<LigneDeCommande> LigneDeCommandes { get; set; }
+        public DbSet <Option> Options { get; set; }
     }
 }

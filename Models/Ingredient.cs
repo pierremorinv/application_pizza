@@ -17,3 +17,4 @@ namespace WebApplication2.Models
 
         public Option? Option { get; set; }
     }
+}
