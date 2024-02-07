@@ -25,34 +25,78 @@ namespace WebApplication2.Controllers
         }
 
 
-        public async Task<IActionResult> AddPizzaInLigneDeCommande(int PizzaId, int CommandeId)
+        public async Task<IActionResult> AddPizzaInLigneDeCommande(int PizzaId, int CommandeId, int LigneDeCommandeId)
         {
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
 
             Pizza pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
             Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(cl => cl.Pizza).AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
+            LigneDeCommande ligneDeCommande = await _context.LigneDeCommandes.FirstOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
 
-
-            if ((pizza != null) && (commande != null))
+            if ((pizza != null) && (commande != null) && !commande.ligneDeCommandes.Contains(ligneDeCommande))
             {
+                
                 commande.ligneDeCommandes.Add(new LigneDeCommande
                 {
                     CommandeId = commande.CommandeId,
                     Pizza = pizza,
                     PizzaId = pizza.PizzaId,
                     PrixUnitaire = pizza.Prix,
+                    QuantitePizza = 1                     
                 });
+
                 _context.Update(commande);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", new { PizzaId, CommandeId });
+                return RedirectToAction("Index", new { PizzaId, CommandeId, LigneDeCommandeId });
             }
             else
             {
                 return (NotFound());
 
             }
+        }
+        public async Task<IActionResult> AddPizzaQuantity(int PizzaId, int CommandeId, int LigneDeCommandeId)
+        {
+            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
+            Pizza pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
+            Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(cl => cl.Pizza).AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
+            LigneDeCommande ligneDeCommande = await _context.LigneDeCommandes.FirstOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
 
 
+            if ((pizza != null) && (ligneDeCommande != null))
+            {
+                ligneDeCommande.QuantitePizza++;
+                _context.Update(ligneDeCommande);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", new { PizzaId, CommandeId, LigneDeCommandeId});
+            }
+            else
+            {
+                return (NotFound());
+            }
+        }
+        public async Task<IActionResult> DeletePizzaQuantity(int PizzaId, int CommandeId, int LigneDeCommandeId)
+        {
+            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
+            Pizza pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
+
+            Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
+            LigneDeCommande ligneDeCommande = await _context.LigneDeCommandes.FirstOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
+
+
+            if ((pizza != null) && (ligneDeCommande != null) && (ligneDeCommande.QuantitePizza > 1))
+            {
+                ligneDeCommande.QuantitePizza--;
+                _context.Update(ligneDeCommande);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", new { PizzaId, CommandeId, LigneDeCommandeId });
+            }
+            else
+            {
+                return (NotFound());
+            }
         }
 
         public async Task<IActionResult> DeleteLigneDeCommandeInCommande(int LigneDeCommandeId, int CommandeId)

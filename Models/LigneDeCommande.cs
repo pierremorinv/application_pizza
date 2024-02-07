@@ -11,6 +11,8 @@ namespace WebApplication2.Models
         public int PizzaId { get; set; }
         public Pizza Pizza { get; set; } = null;
 
+        public int QuantitePizza { get; set; } 
+
         public float PrixUnitaire { get; set; }
 
         public Commande? Commande { get; set; }

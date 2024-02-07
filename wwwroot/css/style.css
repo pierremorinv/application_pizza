@@ -287,3 +287,15 @@ a {
 button:hover{
     cursor:pointer;
 }
+.div-quantite-pizza{
+   
+width:10%;
+}
+.btn-quantite{
+    text-align:center;
+    padding:30%;
+    color:green;
+    background-color:black;
+    margin-top:20%;
+    display:block;
+}
