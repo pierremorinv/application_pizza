@@ -12,16 +12,16 @@
             <p>Aucune pizza disponible</p>
         }
         @{
-          
-            float prixTotal = 0;
-          
 
-          
+            float prixTotal = 0;
+
+
+
         }
 
         @foreach (var pizza in Model.Pizzas)
         {
-            
+
 
             <div class="menu-pizza">
                 <span class="menu-pizza-nom">@pizza.Nom</span> <span class="menu-pizza-price">@pizza.Prix €</span>
@@ -35,7 +35,7 @@
 
 
                     <span class="btn-ajouter"><a href="@Url.Action("AddPizzaInLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> Ajouter </a> </span>
-                    
+
                 </div>
                 @if (pizza.Vegetarienne)
                 {
@@ -50,29 +50,26 @@
     <div class="commande-client-tableau">
         <h1 class="commande-client-tableau-h1">Votre commande</h1>
         <div class="commande-client-tableau-content">
-             <p>Numéro de la commande : @Model.Commande.CommandeId</p>
-         
-            @foreach(var ligne in Model.Commande.ligneDeCommandes)
+            <p>Numéro de la commande : @Model.Commande.CommandeId</p>
+
+            @foreach (var ligne in Model.Commande.ligneDeCommandes)
             {
-                
-               
-                {
-                     prixTotal += ligne.Pizza.Prix;
-                    <div class="commande-client-tableau-item">
-                        
-                        <p>@ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p> <button>❌</button>
-                    </div>
-                   
-                }
-                <p>Le prix total est de @prixTotal € </p>
-       
+
+                prixTotal += @ligne.Pizza.Prix;
+                <div class="commande-client-tableau-item">
+
+                    <p>@ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p>
+                    <span class="btn-supprimer"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId, CommandeId = Model.Commande.CommandeId})">❌ </a></span>
+
+                </div>
+
             }
 
 
-             <p>Le prix total est de @prixTotal € </p>
-            
+            <p>Le prix total est de @prixTotal € </p>
+
         </div>
-       
+
 
         <div class="commande-client-div-button">
             <button class="commande-client-button">Commander</button>

@@ -51,9 +51,27 @@ namespace WebApplication2.Controllers
                 return (NotFound());
 
             }
-           
+
 
         }
 
+        public async Task<IActionResult> DeleteLigneDeCommandeInCommande(int LigneDeCommandeId, int CommandeId)
+        {
+            LigneDeCommande LigneDeCommande = await _context.LigneDeCommandes.AsNoTracking().FirstOrDefaultAsync(p => p.LigneDeCommandeId == LigneDeCommandeId);
+            Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(cl => cl.Pizza).AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
+
+            if ((LigneDeCommande != null) && (commande != null))
+            {
+               commande.ligneDeCommandes.Remove(LigneDeCommande);
+                _context.Remove(LigneDeCommande);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return (NotFound());
+
+            }
+        }
     }
 }
