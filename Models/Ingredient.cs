@@ -13,8 +13,8 @@ namespace WebApplication2.Models
         [Column(TypeName = "decimal(18, 2)")]
         public float Prix { get; set; }
 
-        public IList<Pizza>? Pizzas { get; set; }
+        public IList<Pizza>? Pizzas { get; set; }     
 
-        public Option? Option { get; set; }
+        public IList<LigneDeCommande> LigneDeCommandes { get; set; }
     }
 }

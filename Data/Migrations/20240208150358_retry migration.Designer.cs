@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication2.Data;
 
@@ -11,9 +12,11 @@ using WebApplication2.Data;
 namespace WebApplication2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240208150358_retry migration")]
+    partial class retrymigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace WebApplication2.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LigneDeCommandeIngredient", b =>
-                {
-                    b.Property<int>("LigneDeCommandeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LigneDeCommandeId", "IngredientId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("LigneDeCommandeIngredient", (string)null);
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -349,6 +337,31 @@ namespace WebApplication2.Data.Migrations
                     b.ToTable("LigneDeCommandes");
                 });
 
+            modelBuilder.Entity("WebApplication2.Models.Option", b =>
+                {
+                    b.Property<int>("OptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OptionId"));
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LigneDecommandeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OptionId");
+
+                    b.HasIndex("IngredientId")
+                        .IsUnique();
+
+                    b.HasIndex("LigneDecommandeId")
+                        .IsUnique();
+
+                    b.ToTable("Options");
+                });
+
             modelBuilder.Entity("WebApplication2.Models.Pizza", b =>
                 {
                     b.Property<int>("PizzaId")
@@ -370,21 +383,6 @@ namespace WebApplication2.Data.Migrations
                     b.HasKey("PizzaId");
 
                     b.ToTable("Pizzas");
-                });
-
-            modelBuilder.Entity("LigneDeCommandeIngredient", b =>
-                {
-                    b.HasOne("WebApplication2.Models.Ingredient", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientId")
-                        .IsRequired()
-                        .HasConstraintName("Fk_LigneDeCommandeIngredient_Ingredient");
-
-                    b.HasOne("WebApplication2.Models.LigneDeCommande", null)
-                        .WithMany()
-                        .HasForeignKey("LigneDeCommandeId")
-                        .IsRequired()
-                        .HasConstraintName("FK_LigneDeCommandeIngredient_LigneDeCommande");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -483,6 +481,21 @@ namespace WebApplication2.Data.Migrations
                     b.Navigation("Pizza");
                 });
 
+            modelBuilder.Entity("WebApplication2.Models.Option", b =>
+                {
+                    b.HasOne("WebApplication2.Models.Ingredient", "Iingredient")
+                        .WithOne("Option")
+                        .HasForeignKey("WebApplication2.Models.Option", "IngredientId");
+
+                    b.HasOne("WebApplication2.Models.LigneDeCommande", "LigneDeCommande")
+                        .WithOne("Option")
+                        .HasForeignKey("WebApplication2.Models.Option", "LigneDecommandeId");
+
+                    b.Navigation("Iingredient");
+
+                    b.Navigation("LigneDeCommande");
+                });
+
             modelBuilder.Entity("WebApplication2.Models.Client", b =>
                 {
                     b.Navigation("Commandes");
@@ -491,6 +504,16 @@ namespace WebApplication2.Data.Migrations
             modelBuilder.Entity("WebApplication2.Models.Commande", b =>
                 {
                     b.Navigation("ligneDeCommandes");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Ingredient", b =>
+                {
+                    b.Navigation("Option");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.LigneDeCommande", b =>
+                {
+                    b.Navigation("Option");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Pizza", b =>

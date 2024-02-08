@@ -78,17 +78,14 @@
                         <p>@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p>
                         <button> <a class="a-extra"> Ajouter Extra  <a /> </button>
 
-                        @if (Model.Option != null)
+                        @if (ligne.Ingredients != null)
                         {
                             
-                            @foreach (var option in Model.Option)
+                            @foreach (var ingredient in ligne.Ingredients)
                             {
-                                
-                                if (option.LigneDecommandeId == ligne.LigneDeCommandeId)
-                                {
 
-                                    <span class="test-option"> @option.Iingredient.Nom</span>
-                                }
+                                    <span class="test-option"> @ingredient.Nom</span>
+                                
                             }
                         }
                         else

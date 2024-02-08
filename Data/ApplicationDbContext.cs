@@ -37,6 +37,31 @@ namespace WebApplication2.Data
               
             });
 
+            modelBuilder.Entity<LigneDeCommande>(entity =>
+            {
+                entity.HasMany(o => o.Ingredients).WithMany(i => i.LigneDeCommandes)
+                    .UsingEntity<Dictionary<string, object>>(
+                    "LigneDeCommandeIngredient",
+                    oi => oi.HasOne<Ingredient>().WithMany()
+                    .HasForeignKey("IngredientId")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_LigneDeCommandeIngredient_Ingredient"),
+
+                    i => i.HasOne<LigneDeCommande>().WithMany()
+                    .HasForeignKey("LigneDeCommandeId")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_LigneDeCommandeIngredient_LigneDeCommande"),
+
+                    oi =>
+                    {
+                        oi.HasKey("LigneDeCommandeId", "IngredientId");
+                        oi.ToTable("LigneDeCommandeIngredient");
+                    }
+
+                    );
+
+
+            });
 
             modelBuilder.Entity<Client>()
                 .HasMany(cl => cl.Commandes)
@@ -58,18 +83,6 @@ namespace WebApplication2.Data
                 .HasForeignKey<LigneDeCommande>(lc => lc.PizzaId)
                 .IsRequired();
 
-
-            modelBuilder.Entity<Option>()
-                .HasOne(o => o.LigneDeCommande)
-                .WithOne(lc => lc.Option)
-                .HasForeignKey<Option>(lc => lc.LigneDecommandeId)
-                .IsRequired(false);
-                
-            modelBuilder.Entity<Option>()
-                .HasOne(o => o.Iingredient)
-                .WithOne(lc => lc.Option)
-                .HasForeignKey<Option> (lc => lc.IngredientId)
-                .IsRequired(false); 
         }
 
         public DbSet<Pizza> Pizzas { get; set; }
@@ -78,6 +91,6 @@ namespace WebApplication2.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Commande> Commandes { get; set;}
         public DbSet<LigneDeCommande> LigneDeCommandes { get; set; }
-        public DbSet <Option> Options { get; set; }
+       
     }
 }
