@@ -1,0 +1,65 @@
+﻿@model WebApplication2.ViewModel.PizzaCommandeViewModel;
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@{
+    <div class="menu-create-ligne-commande-container">
+        <div class="table-ingredient-options">
+            <h2 class="">Ajouter des extras à votre 🍕</h2>
+            <table class="tableau">
+                <tr>
+                    <th> Nom </th>
+                    <th>Prix</th>
+                    <th>Végétarien</th>
+                    <th>Ajouter</th>
+
+                </tr>
+
+
+                @foreach (var ingredient in Model.ingredients)
+
+                {
+                    <tr class="tr-extra-ingredient">
+                        <td>@ingredient.Nom</td>
+                        <td>@ingredient.Prix €</td>
+                        <td>@ingredient.Vegetarien</td>
+
+                        <td>
+                            <a href=""> <button> + </button></a>
+                            <a> <button> - </button></a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <div class="add-pizza-in-ligne-container">
+
+            <h3>Votre Pizza</h3>
+            <table> 
+           
+            @if (Model.Pizza != null)
+            {
+
+                {
+                    <p>@Model.Pizza.Nom</p>
+                    <p>Vos Ingredients :</p>
+                    <ul>
+                        @foreach (var ingredient in Model.Pizza.Ingredients)
+                        {
+                            <li>@ingredient.Nom</li>
+                        }
+                    </ul>
+                        <p>Extra :</p>
+                }
+                    <span class="btn-ajouter"><a href="@Url.Action("AddPizzaInLigneDeCommande","menu",new { PizzaId = Model.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId} )"> Ajouter </a></span>
+                   
+            }
+            </table>
+          
+
+        </div>
+    </div>
+}

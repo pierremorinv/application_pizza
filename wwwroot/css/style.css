@@ -108,7 +108,7 @@
 /*----------------EDIT-PIZZA-------------------------------*/
 
 body{
-    background-color: darkgray
+    background-color: beige
 }
 .edit-content {
     margin-top:3%;
@@ -338,4 +338,19 @@ td{
 }
 .test-option{
     color:black;
+}
+
+
+.menu-create-ligne-commande-container{
+    margin:3%;
+    justify-content:space-around;
+    display:flex;
+
+}
+.add-pizza-in-ligne-container{
+    border:1px solid black;
+    padding:2%
+}
+.display-none{
+    display:none;
 }

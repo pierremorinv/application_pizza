@@ -10,6 +10,8 @@ namespace WebApplication2.ViewModel
 
         public IList<Ingredient> ingredients { get; set; }
 
+        public Pizza Pizza { get; set; }
+
       
 
     }
