@@ -21,12 +21,12 @@ namespace WebApplication2.Data
                     "PizzaIngredient",
                     pi => pi.HasOne<Ingredient>().WithMany()
                         .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_PizzaIngredient_Ingredient"),
 
                     i => i.HasOne<Pizza>().WithMany()
                         .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_PizzaIngredient_Pizza"),
 
                     pi =>
@@ -44,12 +44,12 @@ namespace WebApplication2.Data
                     "LigneDeCommandeIngredient",
                     oi => oi.HasOne<Ingredient>().WithMany()
                     .HasForeignKey("IngredientId")
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("Fk_LigneDeCommandeIngredient_Ingredient"),
 
                     i => i.HasOne<LigneDeCommande>().WithMany()
                     .HasForeignKey("LigneDeCommandeId")
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_LigneDeCommandeIngredient_LigneDeCommande"),
 
                     oi =>

@@ -38,7 +38,7 @@
                     @if (Model.Commande.ligneDeCommandes.All(lc => lc.PizzaId != pizza.PizzaId))
                     {
                         
-                        <span class="btn-ajouter"><a href="@Url.Action("CreateLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> Editer </a> </span>
+                        <span class="btn-ajouter"><a href="@Url.Action("CreateLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> AJOUTER </a> </span>
 
                        
                     }
@@ -102,7 +102,7 @@
                             }
 
                         </div>
-                        <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId, CommandeId = Model.Commande.CommandeId})">❌ </a></span>
+                        <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId})">❌ </a></span>
 
                     </div>
 
