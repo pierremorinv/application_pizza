@@ -12,7 +12,8 @@ namespace WebApplication2.ViewModel
 
         public Pizza Pizza { get; set; }
 
-      
+        public IList<LigneDeCommande> LigneDeCommandes { get; set; }
+
 
     }
 }

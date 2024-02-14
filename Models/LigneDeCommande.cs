@@ -18,6 +18,8 @@ namespace WebApplication2.Models
         public Commande? Commande { get; set; }
         public int CommandeId { get; set; }
 
-        public IList <Ingredient> Ingredients { get; set; }
+        public IList <Ingredient>? Ingredients { get; set; }
+
+    
     }
 }

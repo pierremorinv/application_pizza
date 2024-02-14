@@ -1,4 +1,4 @@
-﻿@model WebApplication2.ViewModel.PizzaCommandeViewModel;
+﻿@model WebApplication2.ViewModel.OptionViewModel;
 
 @{
     ViewData["Title"] = "Create";
@@ -27,9 +27,9 @@
                         <td>@ingredient.Vegetarien</td>
 
                         <td>
-                            <a href=""> <button> + </button></a>
-                            <a> <button> - </button></a>
-                        </td>
+                            <a href="@Url.Action("AddExtraIngredientInLigneDeCommande","menu", new{ LigneDeCommandeId =  Model.LigneDeCommande.LigneDeCommandeId, ingredientId = ingredient.IngredientId})"> <button> + </button></a>
+                         <a> <button> - </button></a>
+                         </td>
                     </tr>
                 }
 
@@ -40,21 +40,34 @@
             <h3>Votre Pizza</h3>
             <table> 
            
-            @if (Model.Pizza != null)
+            @if (Model.LigneDeCommande.Pizza != null)
             {
 
                 {
-                    <p>@Model.Pizza.Nom</p>
-                    <p>Vos Ingredients :</p>
+                        <p>@Model.LigneDeCommande.Pizza.Nom</p>
+                    <h5>Vos Ingrédients</h5>
                     <ul>
-                        @foreach (var ingredient in Model.Pizza.Ingredients)
+                        @foreach (var ingredient in Model.LigneDeCommande.Pizza.Ingredients)
                         {
-                            <li>@ingredient.Nom</li>
+                            <li>@ingredient.Nom @ingredient.Prix €</li>
                         }
                     </ul>
-                        <p>Extra :</p>
-                }
-                    <span class="btn-ajouter"><a href="@Url.Action("AddPizzaInLigneDeCommande","menu",new { PizzaId = Model.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId} )"> Ajouter </a></span>
+                      
+                        if(Model.LigneDeCommande.Ingredients != null)
+                        {
+                            <p>Extra :</p>
+                            foreach (var extra in Model.LigneDeCommande.Ingredients)
+                            {
+                                <li>  @extra.Nom @extra.Prix €</li>
+                            }
+                        }
+                        else
+                        {
+                            <p> Aucun ingrédient ajouter  </p>
+                        }
+
+                    }
+                    <span class="btn-ajouter"><a href="@Url.Action("")"> Ajouter </a></span>
                    
             }
             </table>

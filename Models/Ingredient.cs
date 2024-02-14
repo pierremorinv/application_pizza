@@ -15,6 +15,6 @@ namespace WebApplication2.Models
 
         public IList<Pizza>? Pizzas { get; set; }     
 
-        public IList<LigneDeCommande> LigneDeCommandes { get; set; }
+        public IList<LigneDeCommande>? LigneDeCommandes { get; set; }
     }
 }
