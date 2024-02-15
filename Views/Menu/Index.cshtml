@@ -33,15 +33,8 @@
                     }
                     @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)
 
-               
-
-                    @if (Model.Commande.ligneDeCommandes.All(lc => lc.PizzaId != pizza.PizzaId))
-                    {
-                        
+                           
                         <span class="btn-ajouter"><a href="@Url.Action("CreateLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> AJOUTER </a> </span>
-
-                       
-                    }
 
                 </div>
                 @if (pizza.Vegetarienne)
@@ -72,7 +65,8 @@
                 @foreach (var ligne in Model.Commande.ligneDeCommandes)
                 {
 
-                    prixTotal += @ligne.Pizza.Prix * ligne.QuantitePizza;
+                    prixTotal += ligne.PrixUnitaire * ligne.QuantitePizza;
+                
                     <div class="commande-client-tableau-item">
                         <div class="div-quantite-pizza">
                             <span class="btn-quantite"> <a href="@Url.Action("AddPizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">+ </a></span>
@@ -82,9 +76,8 @@
                             }
                         </div>
 
-
                         <div>
-                            <p class="p-ligne-de-commande-content">@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.Pizza.Prix €</span></p>
+                            <p class="p-ligne-de-commande-content">@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.PrixUnitaire €</span></p>
 
                             @if (ligne.Ingredients != null)
                             {

@@ -55,7 +55,7 @@
                             <p>Extra :</p>
                             @foreach (var extra in Model.LigneDeCommande.Ingredients)
                             {
-                                <li>  @extra.Nom @extra.Prix €</li>
+                                <li> @extra.Nom @extra.Prix €</li>
                             }
                         }
                         else
@@ -63,8 +63,8 @@
                             <p> Aucun ingrédient ajouter  </p>
                         }
 
-                    
-                    <span class="btn-ajouter"><a href="@Url.Action("")"> Ajouter </a></span>
+
+                <span class="btn-ajouter"><a href="@Url.Action("ConfirmLigneDeCommande","menu", new {LigneDeCommandeId = Model.LigneDeCommande.LigneDeCommandeId})"> Ajouter </a></span>
                    
             
             </table>

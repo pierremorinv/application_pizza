@@ -148,7 +148,7 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> AddIngredientInPizza(int PizzaId, int IngredientId)
         {
             
-            Pizza pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
+            Pizza? pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
             Ingredient? ingredient = await _context.Ingredients.FindAsync(IngredientId);
 
             
@@ -227,7 +227,6 @@ namespace WebApplication2.Controllers
 
             }
        
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
