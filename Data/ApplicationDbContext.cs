@@ -77,10 +77,10 @@ namespace WebApplication2.Data
                .IsRequired();
 
 
-            modelBuilder.Entity<LigneDeCommande>()
-                .HasOne(lc => lc.Pizza)
-                .WithOne(p => p.LigneDeCommande)?
-                .HasForeignKey<LigneDeCommande>(lc => lc.PizzaId)
+            modelBuilder.Entity<Pizza>()
+                .HasMany(p => p.LigneDeCommandes)
+                .WithOne ( lc => lc.Pizza)
+                .HasForeignKey(lc => lc.PizzaId)
                 .IsRequired();
 
         }
