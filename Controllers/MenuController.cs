@@ -129,27 +129,29 @@ namespace WebApplication2.Controllers
             { return NotFound(); }
 
 
-            LigneDeCommande? ligneDeCommandeExistante = await _context.LigneDeCommandes
-                   .Include(lc => lc.Ingredients)
-                   .Include(lc => lc.Pizza)
-                   .Where(lc => lc.CommandeId == ligneDeCommande.CommandeId && lc.LigneDeCommandeId != ligneDeCommande.LigneDeCommandeId && lc.PizzaId == ligneDeCommande.PizzaId)
-                   .FirstOrDefaultAsync();
+            IList<LigneDeCommande>? ligneDeCommandeExistante = await _context.LigneDeCommandes
+                     .Include(lc => lc.Ingredients)
+                     .Include(lc => lc.Pizza)
+                     .Where(lc => lc.CommandeId == ligneDeCommande.CommandeId && lc.LigneDeCommandeId != ligneDeCommande.LigneDeCommandeId && lc.PizzaId == ligneDeCommande.PizzaId)
+                     .ToListAsync();
 
 
             if (ligneDeCommandeExistante != null)
             {
 
-                IList<Ingredient> nouvelleLigne = ligneDeCommande.Ingredients.OrderBy(lc => lc.IngredientId).ToList(); ;
-                IList<Ingredient> ancienneLigne = ligneDeCommandeExistante.Ingredients.OrderBy(lc => lc.IngredientId).ToList();
+                IList<Ingredient> nouvelleLigne = ligneDeCommande.Ingredients.OrderBy(lc => lc.IngredientId).ToList();
 
-                if (nouvelleLigne.SequenceEqual(ancienneLigne) || nouvelleLigne.Count == 0 && ancienneLigne.Count == 0)
+                foreach (var ligne in ligneDeCommandeExistante)
                 {
-                    ligneDeCommandeExistante.QuantitePizza++;
-                    _context.Remove(ligneDeCommande);
-                    await _context.SaveChangesAsync();
-                }
+                    IList<Ingredient> ancienneLigne = ligne.Ingredients.OrderBy(lc => lc.IngredientId).ToList();
 
-             
+                    if (nouvelleLigne.SequenceEqual(ancienneLigne) || nouvelleLigne.Count == 0 && ancienneLigne.Count == 0)
+                    {
+                        ligne.QuantitePizza++;
+                        _context.Remove(ligneDeCommande);
+                        await _context.SaveChangesAsync();
+                    }
+                }
             }
 
 
