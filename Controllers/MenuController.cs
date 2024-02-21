@@ -63,14 +63,9 @@ namespace WebApplication2.Controllers
                 .AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
 
             Pizza? pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
-            LigneDeCommande? ligneDeCommande = await _context.LigneDeCommandes
-                .Include(lc => lc.Pizza).ThenInclude(p => p.Ingredients)
-                .Include(lc => lc.Ingredients)
-                .SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
 
-         
 
-            if (pizza == null )
+            if (pizza == null)
             {
                 return NotFound();
             }
@@ -84,29 +79,13 @@ namespace WebApplication2.Controllers
 
             };
 
-
-            if (commande.ligneDeCommandes.Any(lc => lc.Pizza.PizzaId == PizzaId))
-
-            {
-                ligneDeCommande.QuantitePizza++;
-                _context.Update(ligneDeCommande);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Create", new { ligneDeCommande.LigneDeCommandeId });
-              
-            }
-            else 
-            {
-
-                commande.ligneDeCommandes.Add(NouvelleLigneDeCommande);
-                _context.Update(NouvelleLigneDeCommande);
+            commande.ligneDeCommandes.Add(NouvelleLigneDeCommande);
+            _context.Update(NouvelleLigneDeCommande);
 
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return RedirectToAction("Create", new { NouvelleLigneDeCommande.LigneDeCommandeId });
-
-            }
-
+            return RedirectToAction("Create", new { NouvelleLigneDeCommande.LigneDeCommandeId });
 
         }
 
@@ -138,10 +117,41 @@ namespace WebApplication2.Controllers
             return RedirectToAction("Create", new { LigneDeCommandeId });
         }
 
+
+
         public async Task<IActionResult> ConfirmLigneDeCommande(int LigneDeCommandeId)
         {
             LigneDeCommande? ligneDeCommande = await _context.LigneDeCommandes
-                .Include(lc => lc.Ingredients).SingleOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
+                .Include(lc => lc.Ingredients)
+                .Include(lc => lc.Pizza).
+                SingleOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
+            if (ligneDeCommande == null)
+            { return NotFound(); }
+
+
+            LigneDeCommande? ligneDeCommandeExistante = await _context.LigneDeCommandes
+                   .Include(lc => lc.Ingredients)
+                   .Include(lc => lc.Pizza)
+                   .Where(lc => lc.CommandeId == ligneDeCommande.CommandeId && lc.LigneDeCommandeId != ligneDeCommande.LigneDeCommandeId && lc.PizzaId == ligneDeCommande.PizzaId)
+                   .FirstOrDefaultAsync();
+
+
+            if (ligneDeCommandeExistante != null)
+            {
+
+                IList<Ingredient> nouvelleLigne = ligneDeCommande.Ingredients.OrderBy(lc => lc.IngredientId).ToList(); ;
+                IList<Ingredient> ancienneLigne = ligneDeCommandeExistante.Ingredients.OrderBy(lc => lc.IngredientId).ToList();
+
+                if (nouvelleLigne.SequenceEqual(ancienneLigne) || nouvelleLigne.Count == 0 && ancienneLigne.Count == 0)
+                {
+                    ligneDeCommandeExistante.QuantitePizza++;
+                    _context.Remove(ligneDeCommande);
+                    await _context.SaveChangesAsync();
+                }
+
+             
+            }
+
 
 
             return RedirectToAction("Index", new { LigneDeCommandeId });
