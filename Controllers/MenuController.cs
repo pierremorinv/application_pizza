@@ -121,49 +121,35 @@ namespace WebApplication2.Controllers
 
         public async Task<IActionResult> ConfirmLigneDeCommande(int LigneDeCommandeId)
         {
+            // Ligne de commande actuelle
             LigneDeCommande? ligneDeCommande = await _context.LigneDeCommandes
                 .Include(lc => lc.Ingredients)
                 .Include(lc => lc.Pizza).
                 SingleOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
+
             if (ligneDeCommande == null)
-            { return NotFound(); }
+            {
+                return NotFound();
+            }
 
+            IList<LigneDeCommande>? ligneDeCommandeExistantes = await _context.LigneDeCommandes
+             .Include(lc => lc.Ingredients)
+             .Include(lc => lc.Pizza)
+             .Where(lc => lc.CommandeId == ligneDeCommande.CommandeId && lc.LigneDeCommandeId != ligneDeCommande.LigneDeCommandeId && lc.PizzaId == ligneDeCommande.PizzaId)
+             .ToListAsync();
 
-            IList<LigneDeCommande>? ligneDeCommandeExistante = await _context.LigneDeCommandes
-                     .Include(lc => lc.Ingredients)
-                     .Include(lc => lc.Pizza)
-                     .Where(lc => lc.CommandeId == ligneDeCommande.CommandeId && lc.LigneDeCommandeId != ligneDeCommande.LigneDeCommandeId && lc.PizzaId == ligneDeCommande.PizzaId)
-                     .ToListAsync();
-
+            LigneDeCommande ligneDeCommandeExistante = ligneDeCommandeExistantes.Where(l => l.Ingredients.SequenceEqual(ligneDeCommande.Ingredients)).FirstOrDefault();
 
             if (ligneDeCommandeExistante != null)
             {
-
-                IList<Ingredient> nouvelleLigne = ligneDeCommande.Ingredients.OrderBy(lc => lc.IngredientId).ToList();
-
-                foreach (var ligne in ligneDeCommandeExistante)
-                {
-                    IList<Ingredient> ancienneLigne = ligne.Ingredients.OrderBy(lc => lc.IngredientId).ToList();
-
-                    if (nouvelleLigne.SequenceEqual(ancienneLigne) || nouvelleLigne.Count == 0 && ancienneLigne.Count == 0)
-                    {
-                        ligne.QuantitePizza++;
-                        _context.Remove(ligneDeCommande);
-                        await _context.SaveChangesAsync();
-                    }
-                }
+                ligneDeCommandeExistante.QuantitePizza++;
+                _context.Remove(ligneDeCommande);
+                await _context.SaveChangesAsync();
             }
-
 
 
             return RedirectToAction("Index", new { LigneDeCommandeId });
         }
-
-
-
-
-
-
 
         public async Task<IActionResult> DeleteExtraIngredientInLigneDeCommande(int IngredientId, int LigneDeCommandeId)
         {
