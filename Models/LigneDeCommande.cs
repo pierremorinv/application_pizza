@@ -26,6 +26,7 @@ namespace WebApplication2.Models
         // relation Many to Many entre Ingredients et LigneDeCommande
         public IList <Ingredient>? Ingredients { get; set; }
 
+        public bool Vegetarien {  get; set; }
     
     }
 }

@@ -69,10 +69,10 @@
                 
                     <div class="commande-client-tableau-item">
                         <div class="div-quantite-pizza">
-                            <span class="btn-quantite"> <a href="@Url.Action("AddPizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">+ </a></span>
+                            <span class="btn-quantite"> <a class="btn-quantite-a" href="@Url.Action("AddPizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">+ </a></span>
                             @if (ligne.QuantitePizza > 1)
                             {
-                                <span class="btn-quantite"> <a href="@Url.Action("DeletePizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">-</a></span>
+                                <span class="btn-quantite"> <a class="btn-quantite-a" href="@Url.Action("DeletePizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">-</a></span>
                             }
                         </div>
 
@@ -107,7 +107,8 @@
 
 
             <div class="commande-client-div-button">
-                <button class="commande-client-button">Commander</button>
+                <button class="commande-client-button"> <a asp-action="Validation">Commander</a> </button>
+             
             </div>
         </div>
     }

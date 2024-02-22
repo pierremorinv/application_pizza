@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication2.Data;
 
@@ -11,9 +12,11 @@ using WebApplication2.Data;
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240222101253_add prixTotal on commande moel")]
+    partial class addprixTotaloncommandemoel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,8 +292,8 @@ namespace WebApplication2.Migrations
                     b.Property<DateTime>("DateCommande")
                         .HasColumnType("datetime2");
 
-                    b.Property<float?>("PrixTotal")
-                        .HasColumnType("real");
+                    b.Property<int?>("PrixTotal")
+                        .HasColumnType("int");
 
                     b.HasKey("CommandeId");
 
@@ -341,9 +344,6 @@ namespace WebApplication2.Migrations
 
                     b.Property<int>("QuantitePizza")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Vegetarien")
-                        .HasColumnType("bit");
 
                     b.HasKey("LigneDeCommandeId");
 

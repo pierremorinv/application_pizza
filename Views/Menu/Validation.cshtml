@@ -1,0 +1,54 @@
+﻿@model WebApplication2.Models.Commande
+
+@{
+    Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
+}
+<header>
+    <nav>
+        <ul class="nav-validation-commande">
+            <li class="nav-validation-commande-li">
+                <a href=@Url.Action("Index","Client", new {ClientId = Model.ClientID})>Votre Compte  </a>
+                </li>
+
+            <li class="nav-validation-commande-li">
+                <a href="@Url.Action("NewCommande","client", new { ClientId = Model.ClientID })"> Nouvelle Commande </a>
+            </li>
+
+        </ul>
+    </nav>
+
+</header>
+<div class="confirmation-container">
+    <h2>Merci   pour votre commande  <span>@Model.Client.ClientFirstName</span> !</h2>
+    <h3>Votre commande est la N°@Model.CommandeId</h3>
+
+    <div class="confirmation-ligne-content">
+        @foreach (var ligne in Model.ligneDeCommandes)
+        {
+            var vege = ligne.Vegetarien ? "🌱" : "🍖";
+            <div class="confirm-ligne-commande-content">
+
+                <h4>
+                    @ligne.QuantitePizza x @ligne.Pizza.Nom @vege
+                </h4>
+
+                @if (ligne?.Ingredients.Count > 0)
+                {
+                    <p>
+                        Extra:   @for (int i = 0; i < ligne.Ingredients.Count - 1; i++)
+                        {
+                            <span> @ligne.Ingredients[i].Nom,</span>
+                        }
+                        @(ligne.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @ligne.Ingredients.Last().Nom)
+                    </p>
+                }
+            </div>
+        }
+
+
+    </div>
+    <h3> Le total de votre commande est de @Model.PrixTotal €</h3>
+
+</div>
+
+

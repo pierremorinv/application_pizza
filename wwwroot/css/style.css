@@ -45,7 +45,7 @@
 
 /*--------------------------Home Pizza page -------------------------*/
 .main-pizza-content{
-    width: 40%;
+    width: 50%;
 }
 .home-body {
     background: url("/images/main_background.jpg") no-repeat center center fixed;
@@ -67,7 +67,7 @@
 
 .redirect-menu-link, .nav-bar-acceuil {
     border: 1px solid white;
-    border-radius: 25px;
+    border-radius: 15px;
     transition: 0.7s;
 }
 
@@ -237,7 +237,7 @@ a {
     border: 1px solid green;
     background-color:beige;
     opacity:0.8;
-    width:17%;
+    width:20%;
     height:fit-content;
 }
 .commande-client-tableau-h1{
@@ -279,6 +279,7 @@ a {
 
 }
 .commande-client-button {
+    background-color: green;
     font-size: 22px;
     padding: 3%;
     width: 50%;
@@ -310,9 +311,12 @@ width:10%;
 .btn-quantite, .btn-delete{
     transition:0.4s;
 }
-.btn-delete:hover, .btn-quantite:hover{
-    opacity:0.8;
+.btn-quantite-a{
+    color:beige;
 }
+    .btn-delete:hover, .btn-quantite:hover {
+        opacity: 0.8;
+    }
 .option-value{
     color:black;
 }
@@ -342,6 +346,7 @@ td{
 
 
 .menu-create-ligne-commande-container{
+
     margin:3%;
     justify-content:space-around;
     display:flex;
@@ -353,4 +358,57 @@ td{
 }
 .display-none{
     display:none;
+}
+
+.confirmation-container {
+    color:black;
+    background-color:beige;
+    opacity:0.8;
+    border: 1px solid white;
+    width: fit-content;
+    padding: 2%;
+    border-radius: 10px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.confirmation-ligne-content{
+  
+    padding:1%;
+
+}
+.confirm-ligne-commande-content{
+    margin:1%;
+    padding:1%;
+    background-color:black;
+    color:beige;
+}
+
+.nav-validation-commande {
+    display: flex;
+    justify-content: flex-end;
+    font-size:26px;
+    padding:1%;
+
+}
+.nav-validation-commande-li{
+    opacity:0.8;
+    padding:1%;
+    border: 1px solid beige;
+    background-color:beige;
+    margin:1%;
+    border-radius:10px;
+    transition:0.4s;
+   
+}
+.nav-validation-commande-li:hover{
+    transform:scale(0.95);
+    opacity:1;
+   
+}
+a{
+    color:black;
+    
 }

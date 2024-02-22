@@ -74,10 +74,11 @@ namespace WebApplication2.Controllers
                 CommandeId = CommandeId,
                 Pizza = pizza,
                 QuantitePizza = 1,
-                PrixUnitaire = pizza.Prix
-
-
+                PrixUnitaire = pizza.Prix,
+                Vegetarien = pizza.Vegetarienne
+                
             };
+            commande.PrixTotal += NouvelleLigneDeCommande.PrixUnitaire;
 
             commande.ligneDeCommandes.Add(NouvelleLigneDeCommande);
             _context.Update(NouvelleLigneDeCommande);
@@ -88,8 +89,6 @@ namespace WebApplication2.Controllers
             return RedirectToAction("Create", new { NouvelleLigneDeCommande.LigneDeCommandeId });
 
         }
-
-
 
         public async Task<IActionResult> AddExtraIngredientInLigneDeCommande(int IngredientId, int LigneDeCommandeId)
         {
@@ -105,7 +104,14 @@ namespace WebApplication2.Controllers
                 return NotFound();
 
             }
-
+            if (!ingredient.Vegetarien)
+            {
+                ligneDeCommande.Vegetarien = false;
+            }
+            else
+            {
+                ligneDeCommande.Vegetarien = true;
+            }
 
             ligneDeCommande.Ingredients.Add(ingredient);
             ligneDeCommande.PrixUnitaire += ingredient.Prix;
@@ -116,8 +122,6 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("Create", new { LigneDeCommandeId });
         }
-
-
 
         public async Task<IActionResult> ConfirmLigneDeCommande(int LigneDeCommandeId)
         {
@@ -164,7 +168,7 @@ namespace WebApplication2.Controllers
             {
                 return NotFound();
             }
-
+            ligneDeCommande.PrixUnitaire -= ingredient.Prix;
             ligneDeCommande.Ingredients.Remove(ingredient);
 
             _context.Update(ligneDeCommande);
@@ -173,9 +177,6 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("Create", new { ligneDeCommande.LigneDeCommandeId });
         }
-
-
-
 
         public async Task<IActionResult> AddPizzaQuantity(int PizzaId, int CommandeId, int LigneDeCommandeId)
         {
@@ -241,5 +242,32 @@ namespace WebApplication2.Controllers
 
 
         }
+
+        public async Task<IActionResult> Validation()
+
+        {
+            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
+
+            pizzaCommandeViewModel.Commande = await _context.Commandes
+                .Include(c => c.Client)
+                .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza)
+                .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
+              .AsNoTracking().OrderBy(c => c.ClientID).LastOrDefaultAsync();
+
+            if (pizzaCommandeViewModel.Commande == null)
+            {
+                return (NotFound());
+            }
+            Commande commande = pizzaCommandeViewModel.Commande;
+            commande.PrixTotal = 0;
+
+            foreach(var ligne in commande.ligneDeCommandes)
+            {
+                commande.PrixTotal += ligne.PrixUnitaire;
+            }
+
+            return View(pizzaCommandeViewModel.Commande);
+        }
+
     }
 }

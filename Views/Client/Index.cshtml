@@ -1,41 +1,24 @@
-﻿@model IEnumerable<WebApplication2.Models.Client>
+﻿@model WebApplication2.Models.Client;
+
 
 @{
-    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
 }
 
-<h1>Index</h1>
+<div class="container">
+    <p>@Model.ClientLastName @Model.ClientFirstName</p>
+    <h3>Vos anciennes commandes</h3>
+    @foreach(var commande in Model.Commandes)
+    {
+        <p>Commande N° @commande.CommandeId </p>
+        foreach(var ligne in commande.ligneDeCommandes)
+        {
+            <ul>
+                <li> @ligne.Pizza.Nom</li>
+                
+            </ul>
+        }
+        <h4>Payée @commande.PrixTotal €</h4>
+    }
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ClientFirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClientLastName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClientFirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClientLastName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ClientId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ClientId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ClientId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
