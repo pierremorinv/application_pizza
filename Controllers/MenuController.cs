@@ -25,7 +25,7 @@ namespace WebApplication2.Controllers
                 .Include(c => c.Client)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
-                .AsNoTracking().OrderBy(c => c.ClientID).LastOrDefaultAsync();
+                .AsNoTracking().OrderBy(c => c.DateCommande).LastOrDefaultAsync();
             pizzaCommandeViewModel.Pizzas = await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync();
             pizzaCommandeViewModel.ingredients = await _context.Ingredients.ToListAsync();
 
@@ -165,7 +165,7 @@ namespace WebApplication2.Controllers
 
             Ingredient ingredient = ligneDeCommande.Ingredients.FirstOrDefault(i => i.IngredientId == IngredientId);
 
-            if (ligneDeCommande == null)
+            if (ligneDeCommande == null || ingredient == null)
             {
                 return NotFound();
             }

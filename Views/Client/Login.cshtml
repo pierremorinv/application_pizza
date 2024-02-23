@@ -1,0 +1,33 @@
+﻿@model WebApplication2.Models.Client;
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
+}
+
+
+
+<div class="client-create-form" style="margin-top: 20px;">
+    <h1>Connectez vous</h1>
+
+    @using (Html.BeginForm("Login", "Client", FormMethod.Post))
+
+    {
+        <div class="client-create-form-content">
+            <div class="client-create-form-content-div">
+                <label>Nom</label>
+                @Html.TextBoxFor(model => model.ClientLastName, new { id = "tbLast-name" })
+            </div>
+            <div class="client-create-form-content-div">
+                <label>Prénom</label>
+                @Html.TextBoxFor(model => model.ClientFirstName, new { id = "tb-first-name" })
+            </div>
+
+        </div>
+
+        <input class="btn-add-client" type="submit" value="Ajouter" />
+
+    }
+    <lable>@TempData["Error"]</lable>
+    <p> <a href="@Url.Action("Create","client")">  Pas encore inscrit ? </a> </p>
+</div>

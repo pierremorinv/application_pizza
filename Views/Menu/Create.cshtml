@@ -28,7 +28,7 @@
 
                         <td>
                             <a href="@Url.Action("AddExtraIngredientInLigneDeCommande","menu", new{ LigneDeCommandeId =  Model.LigneDeCommande.LigneDeCommandeId, ingredientId = ingredient.IngredientId})"> <button> + </button></a>
-                            <a href="@Url.Action("DeleteExtraIngredientInLigneDeCommande","menu", new{ LigneDeCommandeId =  Model.LigneDeCommande.LigneDeCommandeId, ingredientId = ingredient.IngredientId})"> <button> - </button></a>
+                          
                          </td>
                     </tr>
                 }
@@ -53,9 +53,10 @@
                         @if(Model.LigneDeCommande.Ingredients != null)
                         {
                             <p>Extra :</p>
-                            @foreach (var extra in Model.LigneDeCommande.Ingredients)
+                            @foreach (Ingredient extra in Model.LigneDeCommande.Ingredients)
                             {
                                 <li> @extra.Nom @extra.Prix €</li>
+                        <a href="@Url.Action("DeleteExtraIngredientInLigneDeCommande","menu", new{ LigneDeCommandeId =  Model.LigneDeCommande.LigneDeCommandeId, ingredientId = extra.IngredientId})"> <button> - </button></a>
                             }
                         }
                         else

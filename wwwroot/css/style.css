@@ -454,3 +454,22 @@ a{
 .h1-commandes {
     width:-webkit-fill-available;
 }
+
+.client-create-form {
+    border-radius:10px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color:beige;
+    padding:2%;
+    color:black;
+    opacity:0.9;
+}
+.client-create-form-content{
+    
+}
+.client-create-form-content-div{
+    margin:2%;
+}
