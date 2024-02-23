@@ -1,4 +1,5 @@
 ﻿/*--------------------------Menu Pizza page-------------------------*/
+
 .menu-pizza-body {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/images/menu_background.jpg") no-repeat center center fixed;
     background-size: cover;
@@ -389,19 +390,19 @@ td{
 .nav-validation-commande {
     display: flex;
     justify-content: flex-end;
-    font-size:26px;
-    padding:1%;
-
+    font-size: 26px;
+    padding: 1%;
+    width: -webkit-fill-available;
 }
-.nav-validation-commande-li{
-    opacity:0.8;
-    padding:1%;
+.nav-validation-commande-li {
+
+    opacity: 0.8;
+    padding: 1%;
     border: 1px solid beige;
-    background-color:beige;
-    margin:1%;
-    border-radius:10px;
-    transition:0.4s;
-   
+    background-color: beige;
+    margin: 1%;
+    border-radius: 10px;
+    transition: 0.4s;
 }
 .nav-validation-commande-li:hover{
     transform:scale(0.95);
@@ -411,4 +412,45 @@ td{
 a{
     color:black;
     
+}
+
+.container-commandes{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+}
+
+.commande-content{
+    font-size:26px;
+    opacity:0.8;
+    width:15%;
+    background-color:beige;
+    color:black;
+    border:1px solid black;
+    border-radius:10px;
+    text-align:center;
+    padding:2%;
+    margin:1%;
+}
+.ligne-content {
+    margin: 1%;
+    padding: 1%;
+    background-color: black;
+    color: beige;
+}
+.nav-commandes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.title-commandes-content{
+    text-align:center;
+    font-size:32px;
+    font-family:Arial;
+   
+}
+
+.h1-commandes {
+    width:-webkit-fill-available;
 }

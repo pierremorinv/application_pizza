@@ -22,6 +22,7 @@ namespace WebApplication2.Controllers
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
 
             pizzaCommandeViewModel.Commande = await _context.Commandes
+                .Include(c => c.Client)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
                 .AsNoTracking().OrderBy(c => c.ClientID).LastOrDefaultAsync();
@@ -243,28 +244,31 @@ namespace WebApplication2.Controllers
 
         }
 
-        public async Task<IActionResult> Validation()
+        public async Task<IActionResult> Validation(int CommandeId)
 
         {
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
 
             pizzaCommandeViewModel.Commande = await _context.Commandes
                 .Include(c => c.Client)
-                .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza)
+                .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza).ThenInclude(lc => lc.Ingredients)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
-              .AsNoTracking().OrderBy(c => c.ClientID).LastOrDefaultAsync();
+                .FirstOrDefaultAsync(c  => c.CommandeId == CommandeId);
 
             if (pizzaCommandeViewModel.Commande == null)
             {
                 return (NotFound());
             }
             Commande commande = pizzaCommandeViewModel.Commande;
+            commande.CommandeId = CommandeId;
             commande.PrixTotal = 0;
 
-            foreach(var ligne in commande.ligneDeCommandes)
+            foreach (var ligne in commande.ligneDeCommandes)
             {
                 commande.PrixTotal += ligne.PrixUnitaire;
             }
+            _context.Update(commande);
+            await _context.SaveChangesAsync();
 
             return View(pizzaCommandeViewModel.Commande);
         }

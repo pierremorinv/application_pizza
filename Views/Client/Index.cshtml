@@ -5,20 +5,44 @@
     Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
 }
 
-<div class="container">
-    <p>@Model.ClientLastName @Model.ClientFirstName</p>
-    <h3>Vos anciennes commandes</h3>
+<header>
+   
+    <nav class="nav-commandes">
+        <div class="h1-commandes"> 
+        <h1> Client : @Model.ClientLastName @Model.ClientFirstName</h1>
+        </div>
+        <ul class="nav-validation-commande">
+            <li class="nav-validation-commande-li">
+                <a href=@Url.Action("Disconnect","Client", new {ClientId = Model.ClientId})>Se Déconnecter </a>
+                </li>
+
+            <li class="nav-validation-commande-li">
+                <a href="@Url.Action("NewCommande","client", new { ClientId = Model.ClientId })"> Nouvelle Commande </a>
+            </li>
+
+        </ul>
+    </nav>
+    </header>
+
+<div class="title-commandes-content">  <h2>Vos anciennes commandes</h2></div>
+  
+<div class="container-commandes">
     @foreach(var commande in Model.Commandes)
     {
+        <div class="commande-content"> 
         <p>Commande N° @commande.CommandeId </p>
-        foreach(var ligne in commande.ligneDeCommandes)
-        {
             <ul>
-                <li> @ligne.Pizza.Nom</li>
+        @foreach(var ligne in commande.ligneDeCommandes)
+        {
+           
+                <li class="ligne-content">@ligne.QuantitePizza x @ligne.Pizza.Nom @ligne.PrixUnitaire €</li>
                 
-            </ul>
+            
         }
+            </ul>
+        <h5>@commande.DateCommande</h5>
         <h4>Payée @commande.PrixTotal €</h4>
+        </div>
     }
 </div>
 

@@ -2,7 +2,10 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
+
 }
+
+
 <div class="menu-pizza-content">
     <div class="main-pizza-content">
         <img class="menu-pizza-small-logo" src="/images/small_logo.png" />
@@ -107,7 +110,7 @@
 
 
             <div class="commande-client-div-button">
-                <button class="commande-client-button"> <a asp-action="Validation">Commander</a> </button>
+                <button class="commande-client-button"> <a href=@Url.Action("Validation","menu", new {CommandeId = Model.Commande.CommandeId})>Commander</a> </button>
              
             </div>
         </div>

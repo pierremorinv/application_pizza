@@ -37,5 +37,12 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("", "menu");
         }
+
+
+        public async Task<IActionResult> NewClient(int ClientId)
+        {
+            return View();
+        }
     }
+  
 }
