@@ -12,8 +12,8 @@ using WebApplication2.Data;
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240216163856_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240228133700_reboot db")]
+    partial class rebootdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,7 +273,13 @@ namespace WebApplication2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CompteId")
+                        .HasColumnType("int");
+
                     b.HasKey("ClientId");
+
+                    b.HasIndex("CompteId")
+                        .IsUnique();
 
                     b.ToTable("Clients");
                 });
@@ -292,11 +298,31 @@ namespace WebApplication2.Migrations
                     b.Property<DateTime>("DateCommande")
                         .HasColumnType("datetime2");
 
+                    b.Property<float?>("PrixTotal")
+                        .HasColumnType("real");
+
                     b.HasKey("CommandeId");
 
                     b.HasIndex("ClientID");
 
                     b.ToTable("Commandes");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Compte", b =>
+                {
+                    b.Property<int>("CompteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompteId"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CompteId");
+
+                    b.ToTable("Compte");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Ingredient", b =>
@@ -341,6 +367,9 @@ namespace WebApplication2.Migrations
 
                     b.Property<int>("QuantitePizza")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Vegetarien")
+                        .HasColumnType("bit");
 
                     b.HasKey("LigneDeCommandeId");
 
@@ -459,6 +488,17 @@ namespace WebApplication2.Migrations
                         .HasConstraintName("FK_PizzaIngredient_Pizza");
                 });
 
+            modelBuilder.Entity("WebApplication2.Models.Client", b =>
+                {
+                    b.HasOne("WebApplication2.Models.Compte", "Compte")
+                        .WithOne("Client")
+                        .HasForeignKey("WebApplication2.Models.Client", "CompteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Compte");
+                });
+
             modelBuilder.Entity("WebApplication2.Models.Commande", b =>
                 {
                     b.HasOne("WebApplication2.Models.Client", "Client")
@@ -497,6 +537,11 @@ namespace WebApplication2.Migrations
             modelBuilder.Entity("WebApplication2.Models.Commande", b =>
                 {
                     b.Navigation("ligneDeCommandes");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Compte", b =>
+                {
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Pizza", b =>

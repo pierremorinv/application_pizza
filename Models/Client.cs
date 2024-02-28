@@ -9,5 +9,9 @@
 
         public IList<Commande>? Commandes { get; set; }
 
+        public int CompteId { get; set; }
+
+        public Compte Compte { get; set; } = null!;
+
     }
 }

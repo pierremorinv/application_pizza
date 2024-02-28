@@ -34,7 +34,7 @@ namespace WebApplication2.Data
                         pi.HasKey("PizzaId", "IngredientId");
                         pi.ToTable("PizzaIngredient");
                     });
-              
+
             });
 
             modelBuilder.Entity<LigneDeCommande>(entity =>
@@ -57,11 +57,14 @@ namespace WebApplication2.Data
                         oi.HasKey("LigneDeCommandeId", "IngredientId");
                         oi.ToTable("LigneDeCommandeIngredient");
                     }
-
                     );
-
-
             });
+
+            modelBuilder.Entity<Compte>()
+                 .HasOne(co => co.Client)
+                 .WithOne(cl => cl.Compte)
+                 .HasForeignKey<Client>(co => co.CompteId)
+                 .IsRequired();
 
             modelBuilder.Entity<Client>()
                 .HasMany(cl => cl.Commandes)
@@ -69,28 +72,27 @@ namespace WebApplication2.Data
                 .HasForeignKey(cl => cl.ClientID)
                 .IsRequired();
 
-
             modelBuilder.Entity<Commande>()
                .HasMany(c => c.ligneDeCommandes)
                .WithOne(lc => lc.Commande)
                .HasForeignKey(lc => lc.CommandeId)
                .IsRequired();
 
-
             modelBuilder.Entity<Pizza>()
                 .HasMany(p => p.LigneDeCommandes)
-                .WithOne ( lc => lc.Pizza)
+                .WithOne(lc => lc.Pizza)
                 .HasForeignKey(lc => lc.PizzaId)
                 .IsRequired();
-
         }
 
+        public DbSet<Compte> Comptes { get; set; }
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
-
         public DbSet<Client> Clients { get; set; }
-        public DbSet<Commande> Commandes { get; set;}
+        public DbSet<Commande> Commandes { get; set; }
         public DbSet<LigneDeCommande> LigneDeCommandes { get; set; }
-       
+
+
+
     }
 }

@@ -12,8 +12,8 @@ using WebApplication2.Data;
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240222133034_add vege property on lc ")]
-    partial class addvegepropertyonlc
+    [Migration("20240228134234_modify name")]
+    partial class modifyname
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,7 +273,13 @@ namespace WebApplication2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CompteId")
+                        .HasColumnType("int");
+
                     b.HasKey("ClientId");
+
+                    b.HasIndex("CompteId")
+                        .IsUnique();
 
                     b.ToTable("Clients");
                 });
@@ -300,6 +306,27 @@ namespace WebApplication2.Migrations
                     b.HasIndex("ClientID");
 
                     b.ToTable("Commandes");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Compte", b =>
+                {
+                    b.Property<int>("CompteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompteId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CompteId");
+
+                    b.ToTable("Comptes");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Ingredient", b =>
@@ -465,6 +492,17 @@ namespace WebApplication2.Migrations
                         .HasConstraintName("FK_PizzaIngredient_Pizza");
                 });
 
+            modelBuilder.Entity("WebApplication2.Models.Client", b =>
+                {
+                    b.HasOne("WebApplication2.Models.Compte", "Compte")
+                        .WithOne("Client")
+                        .HasForeignKey("WebApplication2.Models.Client", "CompteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Compte");
+                });
+
             modelBuilder.Entity("WebApplication2.Models.Commande", b =>
                 {
                     b.HasOne("WebApplication2.Models.Client", "Client")
@@ -503,6 +541,11 @@ namespace WebApplication2.Migrations
             modelBuilder.Entity("WebApplication2.Models.Commande", b =>
                 {
                     b.Navigation("ligneDeCommandes");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Compte", b =>
+                {
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Pizza", b =>

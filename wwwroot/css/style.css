@@ -127,6 +127,7 @@ body{
 }
 form {
     margin-top: 3%;
+    margin-bottom: 3%;
 
 }
 
@@ -288,7 +289,10 @@ a {
     padding: 3%;
     width: 50%;
     border-radius: 10px;
-
+    opacity: 0.9;
+}
+.commande-client-button:hover {
+   opacity:1;
 }
 button:hover{
     cursor:pointer;
@@ -475,6 +479,13 @@ a{
 .client-create-form-content{
     
 }
+.label-create-client{
+    
+display:block;
+margin-bottom:3%;
+margin-top:3%;  
+
+}
 .client-create-form-content-div{
     margin:1%;
 }
@@ -497,4 +508,8 @@ a{
 .btn-ajouter-commande:hover{
     color:black;
     opacity:1;
+}
+.btn-add-client{
+    margin-top:2%;
+    padding:3%
 }

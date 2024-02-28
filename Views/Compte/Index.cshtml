@@ -1,0 +1,53 @@
+﻿@model WebApplication2.ViewModel.CompteClient;
+
+@{
+    Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
+
+}
+
+
+
+
+
+<div class="client-create-form" style="margin-top: 20px;">
+    <h1>Créer Votre Compte</h1>
+
+    @using (Html.BeginForm("Create", "Compte", FormMethod.Post))
+
+    {
+        <div class="client-create-form-content">
+            <div class="client-create-form-content-div">
+                <label class="label-create-client">Nom</label>
+                @Html.TextBoxFor(model => model.Client.ClientLastName, new { id = "tbLast-name" })
+            </div>
+            <div class="client-create-form-content-div">
+                <label class="label-create-client">Prénom</label>
+                @Html.TextBoxFor(model => model.Client.ClientFirstName, new { id = "tb-first-name" })
+            </div>
+
+        </div>
+ 
+  
+        <div class="client-create-form-content">
+            <div class="client-create-form-content-div">
+                <label class="label-create-client">Email </label>
+                @Html.TextBoxFor(model => model.Compte.Email, new { id = "tb-Email", type = "email", required = "required" })
+            </div>
+            <div class="client-create-form-content-div">
+                <label class="label-create-client">Mot de passe</label>
+                @Html.TextBoxFor(model => model.Compte.Password, new { id = "tb-Password",type ="password", required="required"})
+            </div>
+
+        </div>
+        <input class="btn-add-client" type="submit" value="Ajouter" />
+    }
+ 
+      
+
+
+    <div>
+        <a href="@Url.Action("Login","Compte")">Connectez vous ici si vous avez un compte !</a>
+    </div>
+    <lable>@TempData["Error"]</lable>
+
+</div>

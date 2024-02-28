@@ -11,26 +11,26 @@
     <h1>Créer Votre Compte</h1>
 
     @using (Html.BeginForm("Create", "Client", FormMethod.Post))
-  
+
     {
         <div class="client-create-form-content">
             <div class="client-create-form-content-div">
-            <label>Nom</label>
-            @Html.TextBoxFor(model => model.ClientLastName, new { id = "tbLast-name" })
-    </div>
+                <label class="label-create-client">Nom</label>
+                @Html.TextBoxFor(model => model.ClientLastName, new { id = "tbLast-name" })
+            </div>
             <div class="client-create-form-content-div">
-            <label>Prénom</label>
-            @Html.TextBoxFor(model => model.ClientFirstName, new { id = "tb-first-name" })
+                <label class="label-create-client">Prénom</label>
+                @Html.TextBoxFor(model => model.ClientFirstName, new { id = "tb-first-name" })
+            </div>
+
         </div>
 
-         </div>
-
         <input class="btn-add-client" type="submit" value="Ajouter" />
-       
-    
-    }<div>  
-    <a href="@Url.Action("Login","Client")">Connectez vous ici si vous avez un compte !</a>
+
+
+    }<div>
+        <a href="@Url.Action("Login","Client")">Connectez vous ici si vous avez un compte !</a>
     </div>
     <lable>@TempData["Error"]</lable>
-  
+
 </div>

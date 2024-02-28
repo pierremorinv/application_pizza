@@ -5,25 +5,25 @@
 namespace WebApplication2.Migrations
 {
     /// <inheritdoc />
-    public partial class addvegepropertyonlc : Migration
+    public partial class addpropertyoncomptetable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Vegetarien",
-                table: "LigneDeCommandes",
-                type: "bit",
+            migrationBuilder.AddColumn<string>(
+                name: "Email",
+                table: "Compte",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Vegetarien",
-                table: "LigneDeCommandes");
+                name: "Email",
+                table: "Compte");
         }
     }
 }

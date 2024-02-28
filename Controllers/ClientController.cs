@@ -39,80 +39,10 @@ namespace WebApplication2.Controllers
             return RedirectToAction("", "menu", commande.CommandeId);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            Client client = new Client();
-            return View("Create",client);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Create(Client client)
-        {
-            
-            Client clientEnBase = await _context.Clients.FirstOrDefaultAsync(c => c.ClientFirstName == client.ClientFirstName && c.ClientLastName == client.ClientLastName);
-            if (client == null)
-            {
-                return (NotFound());
-            }
+   
 
-            if (clientEnBase != null) {
+     
 
-                TempData["Error"] = "Ce Compte existe déja";
-                return RedirectToAction("Create");
-            }
-            else if (client.ClientLastName.Length < 2)
-            {
-                TempData["Error"] = "Choissisez un nom plus grand ";
-                return View();
-            }
-            else if (client.ClientFirstName.Length < 2)
-            {
-                TempData["Error"] = "Choissisez un prénom plus grand ";
-                return View();
-            }
-
-            else
-            {
-                _context.Clients.Add(client);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", client);
-            }
-
-           
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Login()
-        {
-            Client client = new Client();
-            return View("Login", client);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Login(Client client)
-        {
-            Client clientEnBase = await _context.Clients.FirstOrDefaultAsync(c => c.ClientFirstName == client.ClientFirstName && c.ClientLastName == client.ClientLastName);
-            if (client == null)
-            {
-                return (NotFound());
-            }
-
-            if (clientEnBase == null)
-            {
-
-                TempData["Error"] = "Ce Compte n'existe pas ";
-                return View();
-            }
-            
-            else
-            {
-               
-                return RedirectToAction("Index", clientEnBase);
-            }
-
-
-        }
     }
   
 }
