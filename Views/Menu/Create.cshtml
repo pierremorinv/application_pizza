@@ -28,8 +28,8 @@
 
                         <td>
                             <a href="@Url.Action("AddExtraIngredientInLigneDeCommande","menu", new{ LigneDeCommandeId =  Model.LigneDeCommande.LigneDeCommandeId, ingredientId = ingredient.IngredientId})"> <button> + </button></a>
-                          
-                         </td>
+
+                        </td>
                     </tr>
                 }
 
@@ -38,39 +38,41 @@
         <div class="add-pizza-in-ligne-container">
 
             <h3>Votre Pizza</h3>
-            <table> 
-           
-                
-                        <p>@Model.LigneDeCommande.Pizza.Nom</p>
-                    <h5>Vos Ingrédients</h5>
-                    <ul>
-                        @foreach (var ingredient in Model.LigneDeCommande.Pizza.Ingredients)
-                        {
-                            <li>@ingredient.Nom @ingredient.Prix €</li>
-                        }
-                    </ul>
-                      
-                        @if(Model.LigneDeCommande.Ingredients != null)
-                        {
-                            <p>Extra :</p>
-                            @foreach (Ingredient extra in Model.LigneDeCommande.Ingredients)
-                            {
-                                <li> @extra.Nom @extra.Prix €</li>
-                        <a href="@Url.Action("DeleteExtraIngredientInLigneDeCommande","menu", new{ LigneDeCommandeId =  Model.LigneDeCommande.LigneDeCommandeId, ingredientId = extra.IngredientId})"> <button> - </button></a>
-                            }
-                        }
-                        else
-                        {
-                            <p> Aucun ingrédient ajouter  </p>
-                        }
+            <table>
 
 
-                <span class="btn-ajouter"><a href="@Url.Action("ConfirmLigneDeCommande","menu", new {LigneDeCommandeId = Model.LigneDeCommande.LigneDeCommandeId})"> Ajouter </a></span>
-                   
-            
+                <p>@Model.LigneDeCommande.Pizza.Nom</p>
+                <h5>Vos Ingrédients</h5>
+                <ul>
+                    @foreach (var ingredient in Model.LigneDeCommande.Pizza.Ingredients)
+                    {
+                        <li>@ingredient.Nom @ingredient.Prix €</li>
+                    }
+                </ul>
+
+                @if (Model.LigneDeCommande.Ingredients != null)
+                {
+                    <p>Extra :</p>
+                    @foreach (Ingredient extra in Model.LigneDeCommande.Ingredients)
+                    {
+                        <li> @extra.Nom @extra.Prix €    <a href="@Url.Action("DeleteExtraIngredientInLigneDeCommande","menu", new{ LigneDeCommandeId =  Model.LigneDeCommande.LigneDeCommandeId, ingredientId = extra.IngredientId})"> <button> - </button></a></li>
+
+                    }
+                }
+                else
+                {
+                    <p> Aucun ingrédient ajouter  </p>
+                }
+              
+                <div class="div-button-ajouter-commande">
+                    <span class="btn-ajouter-commande"><a href="@Url.Action("ConfirmLigneDeCommande","menu", new {LigneDeCommandeId = Model.LigneDeCommande.LigneDeCommandeId})"> Ajouter </a></span>
+                </div>
+
+
+
             </table>
-          
+
 
         </div>
     </div>
-    }
+}

@@ -27,16 +27,15 @@
 
 
             <div class="menu-pizza">
-                <span class="menu-pizza-nom">@pizza.Nom</span> <span class="menu-pizza-price">@pizza.Prix €</span>
+                <div>   <span class="menu-pizza-nom">@pizza.Nom</span> <span class="menu-pizza-price">@pizza.Prix €</span></div>
+
                 <div class="item-pizza-ingredient">
 
                     @for (int i = 0; i < pizza.Ingredients.Count - 1; i++)
                     {
                         <span>@pizza.Ingredients[i].Nom,</span>
                     }
-                    @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)
-
-                           
+                    @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)     
                         <span class="btn-ajouter"><a href="@Url.Action("CreateLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> AJOUTER </a> </span>
 
                 </div>
@@ -79,7 +78,7 @@
                             }
                         </div>
 
-                        <div>
+                        <div class="ligne-de-commande-content">
                             <p class="p-ligne-de-commande-content">@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.PrixUnitaire €</span></p>
 
                             @if (ligne.Ingredients != null)
