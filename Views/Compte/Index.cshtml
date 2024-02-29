@@ -15,19 +15,7 @@
     @using (Html.BeginForm("Create", "Compte", FormMethod.Post))
 
     {
-        <div class="client-create-form-content">
-            <div class="client-create-form-content-div">
-                <label class="label-create-client">Nom</label>
-                @Html.TextBoxFor(model => model.Client.ClientLastName, new { id = "tbLast-name" })
-            </div>
-            <div class="client-create-form-content-div">
-                <label class="label-create-client">Prénom</label>
-                @Html.TextBoxFor(model => model.Client.ClientFirstName, new { id = "tb-first-name" })
-            </div>
-
-        </div>
- 
-  
+       
         <div class="client-create-form-content">
             <div class="client-create-form-content-div">
                 <label class="label-create-client">Email </label>

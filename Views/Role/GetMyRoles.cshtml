@@ -1,0 +1,19 @@
+﻿@model IEnumerable<string>
+
+<h1>La liste de mes roles</h1>
+
+<table class="table table-striped table-bordered"
+    
+     <thead>
+          <tr>
+                <th>Role</th>
+          </tr>
+     </thead>
+     <tbody>
+          @foreach (var role in Model)
+          {
+                <tr>
+                 <td>@role</td>
+                </tr>
+          }
+     </tbody>

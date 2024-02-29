@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.Design;
@@ -9,6 +10,7 @@ using WebApplication2.ViewModel;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class MenuController : Controller
     {
 
@@ -17,6 +19,9 @@ namespace WebApplication2.Controllers
         {
             _context = context;
         }
+
+
+        
         public async Task<IActionResult> Index()
         {
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();

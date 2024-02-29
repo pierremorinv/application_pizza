@@ -8,7 +8,7 @@
 
         public Client  Client {  get; set; }
 
-        public int ClientID { get; set; }
+        public string ClientID { get; set; }
 
         public IList<LigneDeCommande> ligneDeCommandes { get; set; }
 

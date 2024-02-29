@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication2.Models
 {
-    public class Compte
+    public class Compte 
     {
         public int CompteId { get; set; }
         [Required]
@@ -11,8 +12,8 @@ namespace WebApplication2.Models
         [Required]
         [EmailAddress]
         public string Email { get; set; } = null!;
-   
-        public  Client? Client { get; set; }
+
+        public Client? Client { get; set; }
     }
 }
 

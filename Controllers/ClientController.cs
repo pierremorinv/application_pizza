@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
@@ -7,11 +8,12 @@ using WebApplication2.ViewModel;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class ClientController(ApplicationDbContext context) : Controller
     {
         private readonly ApplicationDbContext _context = context;
 
-        public async Task<IActionResult> Index(int ClientId)
+        public async Task<IActionResult> Index(string ClientId)
         {
 
             if (ClientId == null)
@@ -25,7 +27,7 @@ namespace WebApplication2.Controllers
                 .AsNoTracking().FirstOrDefaultAsync(c => c.ClientId == ClientId));
         }
 
-        public async Task<IActionResult> NewCommande(int ClientId)
+        public async Task<IActionResult> NewCommande(string ClientId)
         {
             Commande commande = new Commande()
             {

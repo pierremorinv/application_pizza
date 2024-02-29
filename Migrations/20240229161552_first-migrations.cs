@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebApplication2.Migrations
 {
     /// <inheritdoc />
-    public partial class rebootdb : Migration
+    public partial class firstmigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,16 +51,17 @@ namespace WebApplication2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Compte",
+                name: "Comptes",
                 columns: table => new
                 {
                     CompteId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Compte", x => x.CompteId);
+                    table.PrimaryKey("PK_Comptes", x => x.CompteId);
                 });
 
             migrationBuilder.CreateTable(
@@ -203,19 +204,16 @@ namespace WebApplication2.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    ClientId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ClientFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CompteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.ClientId);
                     table.ForeignKey(
-                        name: "FK_Clients_Compte_CompteId",
+                        name: "FK_Clients_Comptes_CompteId",
                         column: x => x.CompteId,
-                        principalTable: "Compte",
+                        principalTable: "Comptes",
                         principalColumn: "CompteId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,7 +249,7 @@ namespace WebApplication2.Migrations
                     CommandeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateCommande = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClientID = table.Column<int>(type: "int", nullable: false),
+                    ClientID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PrixTotal = table.Column<float>(type: "real", nullable: true)
                 },
                 constraints: table =>
@@ -435,7 +433,7 @@ namespace WebApplication2.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "Compte");
+                name: "Comptes");
         }
     }
 }

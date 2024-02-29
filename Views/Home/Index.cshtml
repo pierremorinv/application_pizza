@@ -1,14 +1,21 @@
-﻿@model WebApplication2.Models.Client
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@model WebApplication2.Models.Client
 @{
     Layout = "~/Views/Shared/_LayoutHomePizza.cshtml";
 }
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <header class="header-client">
+        <nav class="nav-bar-acceuil">
+            <a class="nav-bar-acceuil-a" asp-area="" asp-controller="Role" asp-action="Index"> Page d'administration</a>
+        </nav>
 
-<header class="header-client">
-    <nav class="nav-bar-acceuil">
-        <a class="nav-bar-acceuil-a" href="/Pizza">Page d'administration</a>
-    </nav>
-    <
-</header>
+    </header>
+
+}
+
 
 <div class="redirect-menu-pizza">
     <img src="/images/main_logo.png" />

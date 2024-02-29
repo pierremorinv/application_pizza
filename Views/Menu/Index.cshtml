@@ -34,8 +34,12 @@
                     {
                         <span>@pizza.Ingredients[i].Nom,</span>
                     }
-                    @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)     
+                    @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)  
+                    @if(Model.Client != null)
+                    {
                         <span class="btn-ajouter"><a href="@Url.Action("CreateLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> AJOUTER </a> </span>
+
+                    }          
                 </div>
                 @if (pizza.Vegetarienne)
                 {
@@ -47,71 +51,74 @@
 
 
     </div>
-
-
-    @if(Model.Commande.ligneDeCommandes.Count < 1)
+    @if(Model.Client != null)
     {
+        @if (Model.Commande.ligneDeCommandes.Count < 1)
+        {
 
-    }
-    else
-    {
-        <div class="commande-client-tableau">
+        }
+        else
+        {
+            <div class="commande-client-tableau">
 
 
-            <h2 class="commande-client-tableau-h1">Votre commande</h2>
-            <div class="commande-client-tableau-content">
-                <p>Numéro de la commande : @Model.Commande.CommandeId</p>
+                <h2 class="commande-client-tableau-h1">Votre commande</h2>
+                <div class="commande-client-tableau-content">
+                    <p>Numéro de la commande : @Model.Commande.CommandeId</p>
 
-                @foreach (var ligne in Model.Commande.ligneDeCommandes)
-                {
+                    @foreach (var ligne in Model.Commande.ligneDeCommandes)
+                    {
 
-                    prixTotal += ligne.PrixUnitaire * ligne.QuantitePizza;
-                
-                    <div class="commande-client-tableau-item">
-                        <div class="div-quantite-pizza">
-                            <span class="btn-quantite"> <a class="btn-quantite-a" href="@Url.Action("AddPizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">+ </a></span>
-                            @if (ligne.QuantitePizza > 1)
-                            {
-                                <span class="btn-quantite"> <a class="btn-quantite-a" href="@Url.Action("DeletePizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">-</a></span>
-                            }
-                        </div>
+                        prixTotal += ligne.PrixUnitaire * ligne.QuantitePizza;
 
-                        <div class="ligne-de-commande-content">
-                            <p class="p-ligne-de-commande-content">@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.PrixUnitaire €</span></p>
+                        <div class="commande-client-tableau-item">
+                            <div class="div-quantite-pizza">
+                                <span class="btn-quantite"> <a class="btn-quantite-a" href="@Url.Action("AddPizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">+ </a></span>
+                                @if (ligne.QuantitePizza > 1)
+                                {
+                                    <span class="btn-quantite"> <a class="btn-quantite-a" href="@Url.Action("DeletePizzaQuantity","menu",new{PizzaId = ligne.Pizza.PizzaId, CommandeId = Model.Commande.CommandeId, LigneDecommandeId = ligne.LigneDeCommandeId})">-</a></span>
+                                }
+                            </div>
 
-                            @if (ligne.Ingredients != null)
-                            {
+                            <div class="ligne-de-commande-content">
+                                <p class="p-ligne-de-commande-content">@ligne.QuantitePizza x @ligne.Pizza.Nom <span> @ligne.PrixUnitaire €</span></p>
 
-                                @foreach (var ingredient in ligne.Ingredients)
+                                @if (ligne.Ingredients != null)
                                 {
 
-                                    <span class="test-option"> @ingredient.Nom</span>
+                                    @foreach (var ingredient in ligne.Ingredients)
+                                    {
 
+                                        <span class="test-option"> @ingredient.Nom</span>
+
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                <p class="test-option">pas d'option</p>
-                            }
+                                else
+                                {
+                                    <p class="test-option">pas d'option</p>
+                                }
+
+                            </div>
+                            <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId})">❌ </a></span>
 
                         </div>
-                        <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId})">❌ </a></span>
 
-                    </div>
+                    }
 
-                }
+                    <p>Le prix total est de @prixTotal € </p>
 
-                <p>Le prix total est de @prixTotal € </p>
+                </div>
 
+
+                <div class="commande-client-div-button">
+                    <button class="commande-client-button"> <a href=@Url.Action("Validation","menu", new {CommandeId = Model.Commande.CommandeId})>Commander</a> </button>
+
+                </div>
             </div>
-
-
-            <div class="commande-client-div-button">
-                <button class="commande-client-button"> <a href=@Url.Action("Validation","menu", new {CommandeId = Model.Commande.CommandeId})>Commander</a> </button>
-             
-            </div>
-        </div>
+        }
     }
+
+    
  
  
 </div>
