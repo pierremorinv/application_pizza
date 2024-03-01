@@ -60,11 +60,11 @@ namespace WebApplication2.Data
                     );
             });
 
-            modelBuilder.Entity<Compte>()
-                 .HasOne(co => co.Client)
-                 .WithOne(cl => cl.Compte)
-                 .HasForeignKey<Client>(co => co.CompteId)
-                 .IsRequired();
+            //modelBuilder.Entity<Compte>()
+            //     .HasOne(co => co.Client)
+            //     .WithOne(cl => cl.Compte)
+            //     .HasForeignKey<Client>(co => co.CompteId)
+            //     .IsRequired();
 
             modelBuilder.Entity<Client>()
                 .HasMany(cl => cl.Commandes)
@@ -85,7 +85,7 @@ namespace WebApplication2.Data
                 .IsRequired();
         }
 
-        public DbSet<Compte> Comptes { get; set; }
+        //public DbSet<Compte> Comptes { get; set; }
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Client> Clients { get; set; }

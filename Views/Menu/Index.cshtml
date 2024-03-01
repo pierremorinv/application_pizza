@@ -1,9 +1,31 @@
-﻿@model WebApplication2.ViewModel.PizzaCommandeViewModel;
+﻿@using Microsoft.AspNetCore.Identity
+@model WebApplication2.ViewModel.PizzaCommandeViewModel;
 
 @{
     Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
 
 }
+
+<header>
+
+    <nav class="nav-commandes">
+        <div class="h1-commandes">
+            <h1> Client : @Model.Commande.ClientID</h1>
+        </div>
+        <ul class="nav-validation-commande">
+           
+                <li class="nav-validation-commande-li">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    </form>
+                </li>
+            <li class="nav-validation-commande-li">
+                <a href=@Url.Action("Index","Client", new {ClientId = Model.Commande.ClientID})>Votre Compte  </a>
+            </li>
+           
+        </ul>
+    </nav>
+</header>
 
 
 <div class="menu-pizza-content">
@@ -35,11 +57,10 @@
                         <span>@pizza.Ingredients[i].Nom,</span>
                     }
                     @(pizza.Ingredients.Count <= 0 ? "aucun ingrédient sélectionné" : @pizza.Ingredients.Last().Nom)  
-                    @if(Model.Client != null)
-                    {
+                  
                         <span class="btn-ajouter"><a href="@Url.Action("CreateLigneDeCommande","menu",new{PizzaId = pizza.PizzaId, CommandeId = Model.Commande.CommandeId})"> AJOUTER </a> </span>
 
-                    }          
+                             
                 </div>
                 @if (pizza.Vegetarienne)
                 {
@@ -51,7 +72,7 @@
 
 
     </div>
-    @if(Model.Client != null)
+    @if(Model.Commande != null)
     {
         @if (Model.Commande.ligneDeCommandes.Count < 1)
         {

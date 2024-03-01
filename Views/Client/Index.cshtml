@@ -1,20 +1,27 @@
 ﻿@model WebApplication2.Models.Client;
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     Layout = "~/Views/Shared/_LayoutMenuPizza.cshtml";
 }
 
 <header>
-   
+
     <nav class="nav-commandes">
-        <div class="h1-commandes"> 
-        @* <h1> Client : @Model.ClientLastName @Model.ClientFirstName</h1> *@
+        <div class="h1-commandes">
+            <h1> Client : @Model.ClientId</h1>
         </div>
         <ul class="nav-validation-commande">
-            <li class="nav-validation-commande-li">
-                <a href=@Url.Action("Login","Compte")>Se Déconnecter </a>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li class="nav-validation-commande-li">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    </form>
                 </li>
+            }
 
             <li class="nav-validation-commande-li">
                 <a href="@Url.Action("NewCommande","client", new { ClientId = Model.ClientId })"> Nouvelle Commande </a>
@@ -22,8 +29,8 @@
 
         </ul>
     </nav>
-    </header>
-@if(Model.Commandes.Count > 0)
+</header>
+@if (Model.Commandes.Count > 0)
 {
     <div class="title-commandes-content">  <h2>Vos anciennes commandes</h2></div>
 }
@@ -32,24 +39,25 @@ else
     <div class="title-commandes-content">  <h2>Aucune commande passées</h2></div>
 }
 
-  
 <div class="container-commandes">
-    @foreach(var commande in Model.Commandes)
+
+    @foreach (var commande in Model.Commandes)
     {
-        <div class="commande-content"> 
-        <p>Commande N° @commande.CommandeId </p>
+        @*  if (commande.ligneDeCommandes.Count > 0)
+    { *@
+        <div class="commande-content">
+            <p>Commande N° @commande.CommandeId </p>
             <ul>
-        @foreach(var ligne in commande.ligneDeCommandes)
-        {
-           
-                <li class="ligne-content">@ligne.QuantitePizza x @ligne.Pizza.Nom @ligne.PrixUnitaire €</li>
-                
-            
-        }
+                @foreach (var ligne in commande.ligneDeCommandes)
+                {
+                    <li class="ligne-content">@ligne.QuantitePizza x @ligne.Pizza.Nom @ligne.PrixUnitaire €</li>
+                }
             </ul>
-        <h5>@commande.DateCommande</h5>
-        <h4>Payée @commande.PrixTotal €</h4>
+            <h5>@commande.DateCommande</h5>
+            <h4>Payée @commande.PrixTotal €</h4>
         </div>
+        @*  } *@
+
     }
 </div>
 

@@ -12,9 +12,9 @@ namespace WebApplication2.Models
 
         //public string ClientLastName { get; set; }
 
-        public int CompteId { get; set; }
+        //public int CompteId { get; set; }
 
-        public Compte Compte { get; set; } = null!;
+        //public Compte Compte { get; set; } = null!;
 
 
 

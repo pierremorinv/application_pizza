@@ -11,17 +11,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using WebApplication2.Data;
 using WebApplication2.Models;
 
 namespace WebApplication2.Areas.Identity.Pages.Account
 {
-    public class ConfirmEmailModel : PageModel
+        public class ConfirmEmailModel : PageModel
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public ConfirmEmailModel(UserManager<IdentityUser> userManager)
+        public ConfirmEmailModel(UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace WebApplication2.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("/Index");
             }
-         
+
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -45,9 +49,21 @@ namespace WebApplication2.Areas.Identity.Pages.Account
             Client client = new Client()
             {
                 ClientId = userId,
-    
-                
+                Commandes = new List<Commande>(),
+
             };
+
+            client.Commandes.Add(new Commande()
+            {
+                ClientID = userId,
+                DateCommande = DateTime.Now,
+                ligneDeCommandes = new List<LigneDeCommande>(),
+
+            }); 
+
+ 
+            _context.Clients.Add(client);
+            _context.SaveChanges();
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
             StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Security.Claims;
 using WebApplication2.Data;
 using WebApplication2.Models;
 using WebApplication2.ViewModel;
@@ -20,17 +21,17 @@ namespace WebApplication2.Controllers
             _context = context;
         }
 
-
-        
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int CommandeId)
         {
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
-
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+             
             pizzaCommandeViewModel.Commande = await _context.Commandes
-                .Include(c => c.Client)
+                .Include(c => c.Client).Where(c => c.ClientID == userId)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
-                .AsNoTracking().OrderBy(c => c.DateCommande).LastOrDefaultAsync();
+                .AsNoTracking().OrderBy(co => co.CommandeId).LastOrDefaultAsync();
+
             pizzaCommandeViewModel.Pizzas = await _context.Pizzas.Include(p => p.Ingredients).AsNoTracking().ToListAsync();
             pizzaCommandeViewModel.ingredients = await _context.Ingredients.ToListAsync();
 
@@ -230,10 +231,13 @@ namespace WebApplication2.Controllers
 
         public async Task<IActionResult> DeleteLigneDeCommandeInCommande(int LigneDeCommandeId)
         {
+
+            Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).FirstOrDefaultAsync(c => c.ligneDeCommandes.Any(lc => lc.LigneDeCommandeId == LigneDeCommandeId));
+
             LigneDeCommande? ligneDeCommande = await _context.LigneDeCommandes.Include(lc => lc.Ingredients).AsNoTracking().FirstOrDefaultAsync(p => p.LigneDeCommandeId == LigneDeCommandeId);
 
 
-            if (ligneDeCommande != null)
+            if (ligneDeCommande != null && commande.ligneDeCommandes.Contains(ligneDeCommande))
             {
                 _context.LigneDeCommandes.Remove(ligneDeCommande);
                 await _context.SaveChangesAsync();

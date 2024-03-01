@@ -251,7 +251,6 @@ a {
     text-align:center;
 }
 .menu-pizza-content{
-    margin-top:3%;
     margin-right:3%;
     display:flex;
     justify-content:space-between;
@@ -512,4 +511,9 @@ margin-top:3%;
 .btn-add-client{
     margin-top:2%;
     padding:3%
+}
+.container-login{
+    display:flex;
+   justify-content:center;
+   text-align:center;
 }
