@@ -120,7 +120,7 @@
                                 }
 
                             </div>
-                            <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId})">❌ </a></span>
+                            <span class="btn-delete"><a href="@Url.Action("DeleteLigneDeCommandeInCommande","menu",new{LigneDeCommandeId = ligne.LigneDeCommandeId, CommandeId = ligne.CommandeId})">❌ </a></span>
 
                         </div>
 

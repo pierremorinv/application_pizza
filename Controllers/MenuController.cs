@@ -21,11 +21,11 @@ namespace WebApplication2.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int CommandeId)
+        public async Task<IActionResult> Index()
         {
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-             
+
             pizzaCommandeViewModel.Commande = await _context.Commandes
                 .Include(c => c.Client).Where(c => c.ClientID == userId)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza)
@@ -55,24 +55,28 @@ namespace WebApplication2.Controllers
                 return NotFound();
             }
 
-
-
             return View(ligneDeCommandeIngredient);
         }
 
-
         public async Task<IActionResult> CreateLigneDeCommande(int PizzaId, int CommandeId)
         {
+            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
+
+            pizzaCommandeViewModel.Commande = await _context.Commandes
+                .Include(c => c.Client)
+                .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza).ThenInclude(lc => lc.Ingredients)
+                .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
+                .FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
 
             Commande? commande = await _context.Commandes
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
-                .AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
+                .FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
 
             Pizza? pizza = await _context.Pizzas.Include(p => p.Ingredients).SingleOrDefaultAsync(p => p.PizzaId == PizzaId);
 
 
-            if (pizza == null)
+            if (pizza == null && commande == null)
             {
                 return NotFound();
             }
@@ -83,18 +87,20 @@ namespace WebApplication2.Controllers
                 QuantitePizza = 1,
                 PrixUnitaire = pizza.Prix,
                 Vegetarien = pizza.Vegetarienne
-                
+
             };
-            commande.PrixTotal += NouvelleLigneDeCommande.PrixUnitaire;
-
-            commande.ligneDeCommandes.Add(NouvelleLigneDeCommande);
-            _context.Update(NouvelleLigneDeCommande);
-
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Create", new { NouvelleLigneDeCommande.LigneDeCommandeId });
-
+            if(NouvelleLigneDeCommande.CommandeId == commande.CommandeId)
+            {
+                commande.PrixTotal += NouvelleLigneDeCommande.PrixUnitaire;
+                commande.ligneDeCommandes.Add(NouvelleLigneDeCommande);
+                _context.Update(NouvelleLigneDeCommande);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Create", new { NouvelleLigneDeCommande.LigneDeCommandeId });
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         public async Task<IActionResult> AddExtraIngredientInLigneDeCommande(int IngredientId, int LigneDeCommandeId)
@@ -187,13 +193,19 @@ namespace WebApplication2.Controllers
 
         public async Task<IActionResult> AddPizzaQuantity(int PizzaId, int CommandeId, int LigneDeCommandeId)
         {
-            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
-            Pizza pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
-            Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(cl => cl.Pizza).AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
-            LigneDeCommande ligneDeCommande = await _context.LigneDeCommandes.FirstOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
+            
+            Pizza? pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
+            Commande? commande = await _context.Commandes
+                .Include(c => c.ligneDeCommandes)
+                .ThenInclude(cl => cl.Pizza)
+                .FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
+            LigneDeCommande? ligneDeCommande = await _context.LigneDeCommandes
+                .Include(lc => lc.Commande)
+                .Include(lc => lc.Pizza)
+                .FirstOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
 
 
-            if ((pizza != null) && (ligneDeCommande != null))
+            if (commande.ligneDeCommandes.Contains(ligneDeCommande) && (ligneDeCommande.Pizza.PizzaId == pizza.PizzaId))
             {
                 ligneDeCommande.QuantitePizza++;
                 _context.Update(ligneDeCommande);
@@ -206,16 +218,23 @@ namespace WebApplication2.Controllers
                 return (NotFound());
             }
         }
+
         public async Task<IActionResult> DeletePizzaQuantity(int PizzaId, int CommandeId, int LigneDeCommandeId)
         {
-            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
-            Pizza pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
+        
+            Pizza? pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == PizzaId);
+            Commande? commande = await _context.Commandes
+                .Include(c => c.ligneDeCommandes)
+                .ThenInclude(cl => cl.Pizza)
+                .FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
 
-            Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).AsNoTracking().FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
-            LigneDeCommande ligneDeCommande = await _context.LigneDeCommandes.FirstOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
+            LigneDeCommande? ligneDeCommande = await _context.LigneDeCommandes
+                .Include(lc => lc.Commande)
+                .Include(lc => lc.Pizza)
+                .FirstOrDefaultAsync(lc => lc.LigneDeCommandeId == LigneDeCommandeId);
 
 
-            if ((pizza != null) && (ligneDeCommande != null) && (ligneDeCommande.QuantitePizza > 1))
+            if (commande.ligneDeCommandes.Contains(ligneDeCommande) && (ligneDeCommande.Pizza.PizzaId == pizza.PizzaId) && (ligneDeCommande.QuantitePizza > 1))
             {
                 ligneDeCommande.QuantitePizza--;
                 _context.Update(ligneDeCommande);
@@ -229,29 +248,31 @@ namespace WebApplication2.Controllers
             }
         }
 
-        public async Task<IActionResult> DeleteLigneDeCommandeInCommande(int LigneDeCommandeId)
+        public async Task<IActionResult> DeleteLigneDeCommandeInCommande(int LigneDeCommandeId, int CommandeId)
         {
+            PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
 
-            Commande commande = await _context.Commandes.Include(c => c.ligneDeCommandes).FirstOrDefaultAsync(c => c.ligneDeCommandes.Any(lc => lc.LigneDeCommandeId == LigneDeCommandeId));
+            LigneDeCommande? LigneDeCommande = await _context.LigneDeCommandes
+                .Include(lc => lc.Commande)
+                .Include(lc => lc.Pizza).FirstOrDefaultAsync(p => p.LigneDeCommandeId == LigneDeCommandeId);
+            Commande? commande = await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(cl => cl.Pizza).FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
+            Pizza? pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == LigneDeCommande.Pizza.PizzaId);
 
-            LigneDeCommande? ligneDeCommande = await _context.LigneDeCommandes.Include(lc => lc.Ingredients).AsNoTracking().FirstOrDefaultAsync(p => p.LigneDeCommandeId == LigneDeCommandeId);
-
-
-            if (ligneDeCommande != null && commande.ligneDeCommandes.Contains(ligneDeCommande))
+            if (commande.ligneDeCommandes.Contains(LigneDeCommande))
             {
-                _context.LigneDeCommandes.Remove(ligneDeCommande);
+                commande.ligneDeCommandes.Remove(LigneDeCommande);
+                _context.Remove(LigneDeCommande);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
-
             }
             else
             {
                 return (NotFound());
 
             }
-
-
         }
+
+
 
         public async Task<IActionResult> Validation(int CommandeId)
 
@@ -262,7 +283,7 @@ namespace WebApplication2.Controllers
                 .Include(c => c.Client)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza).ThenInclude(lc => lc.Ingredients)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
-                .FirstOrDefaultAsync(c  => c.CommandeId == CommandeId);
+                .FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
 
             if (pizzaCommandeViewModel.Commande == null)
             {
