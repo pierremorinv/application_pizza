@@ -195,6 +195,9 @@ h6{
     margin-bottom:1%;
     font-size:28px;
 }
+.item-pizza-ingredient span{
+    margin-bottom:1%
+}
 h1{
     margin:2%
 }
@@ -396,6 +399,7 @@ td{
 }
 
 .nav-validation-commande {
+    align-items:center;
     display: flex;
     justify-content: flex-end;
     font-size: 26px;
@@ -460,7 +464,11 @@ a{
 }
 
 .h1-commandes {
-    width:-webkit-fill-available;
+    width: -webkit-fill-available;
+    opacity:0.8;
+    background: beige;
+    border-radius: 10px;
+    color: black;
 }
 
 .client-create-form {
@@ -516,4 +524,15 @@ margin-top:3%;
     display:flex;
    justify-content:center;
    text-align:center;
+}
+.btn-logout{
+    padding:0%;
+    margin:auto;
+    border:0;
+    font-size:26px;
+    border-radius:5px;
+    background-color:beige;
+    color:black;
+    margin-top:5%;
+    opacity:0.8;
 }

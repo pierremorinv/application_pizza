@@ -250,11 +250,13 @@ namespace WebApplication2.Controllers
 
         public async Task<IActionResult> DeleteLigneDeCommandeInCommande(int LigneDeCommandeId, int CommandeId)
         {
+
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
 
             LigneDeCommande? LigneDeCommande = await _context.LigneDeCommandes
                 .Include(lc => lc.Commande)
                 .Include(lc => lc.Pizza).FirstOrDefaultAsync(p => p.LigneDeCommandeId == LigneDeCommandeId);
+
             Commande? commande = await _context.Commandes.Include(c => c.ligneDeCommandes).ThenInclude(cl => cl.Pizza).FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
             Pizza? pizza = await _context.Pizzas.AsNoTracking().FirstOrDefaultAsync(p => p.PizzaId == LigneDeCommande.Pizza.PizzaId);
 
@@ -270,22 +272,21 @@ namespace WebApplication2.Controllers
                 return (NotFound());
 
             }
+
         }
-
-
-
-        public async Task<IActionResult> Validation(int CommandeId)
+        public async Task<IActionResult> Validation(int CommandeId, string ClientId)
 
         {
             PizzaCommandeViewModel pizzaCommandeViewModel = new PizzaCommandeViewModel();
-
             pizzaCommandeViewModel.Commande = await _context.Commandes
                 .Include(c => c.Client)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Pizza).ThenInclude(lc => lc.Ingredients)
                 .Include(c => c.ligneDeCommandes).ThenInclude(lc => lc.Ingredients)
                 .FirstOrDefaultAsync(c => c.CommandeId == CommandeId);
 
-            if (pizzaCommandeViewModel.Commande == null)
+            Client? client = await _context.Clients.FirstOrDefaultAsync(c => c.ClientId == ClientId);
+
+            if (pizzaCommandeViewModel.Commande == null && client.Commandes.Contains(pizzaCommandeViewModel.Commande))
             {
                 return (NotFound());
             }
@@ -299,7 +300,6 @@ namespace WebApplication2.Controllers
             }
             _context.Update(commande);
             await _context.SaveChangesAsync();
-
             return View(pizzaCommandeViewModel.Commande);
         }
 
